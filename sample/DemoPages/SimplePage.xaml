@@ -2,7 +2,7 @@
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
-             x:Class="The49.Maui.BottomSheet.DemoPages.SimplePage"
+             x:Class="The49.Maui.BottomSheet.Sample.DemoPages.SimplePage"
              x:Name="this"
              Padding="16, 32">
 	<the49:BottomSheet.Resources>
@@ -15,8 +15,12 @@
 	<VerticalStackLayout Spacing="16">
 		<HorizontalStackLayout Spacing="16" Padding="16, 0">
 			<Border StrokeShape="RoundRectangle 8" StrokeThickness="0">
-				<Image Clip="RoundRectangle 14" Source="spicy.jpg" HeightRequest="80" WidthRequest="80" />
-			</Border>
+                <Image Source="spicy.jpg" HeightRequest="80" WidthRequest="80">
+                    <Image.Clip>
+                        <RoundRectangleGeometry Rect="0, 0, 80, 80" CornerRadius="14"/>
+                    </Image.Clip>
+                </Image>
+            </Border>
 			<VerticalStackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
 				<Label Text="Hot and spicy" />
 				<Label Text="Drink up!" FontSize="10" />

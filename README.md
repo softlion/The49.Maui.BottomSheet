@@ -1,9 +1,13 @@
+# <img src="./The49.Maui.BottomSheet.icon.svg?raw=true" height="24" alt="The49.Maui.BottomSheet icon" /> The49.Maui.BottomSheet
+
+[![NuGet Version](https://img.shields.io/nuget/v/The49.Maui.BottomSheet)](https://www.nuget.org/packages/The49.Maui.BottomSheet)
+
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
 
 
-<img src="./The49.Maui.BottomSheet.TitleLogo.svg?raw=true" height="64" />
 
-# What is Maui.BottomSheet?
+
+## What is Maui.BottomSheet?
 
 Maui.BottomSheet is a .NET MAUI library used to display pages as Bottom Sheets.
 
@@ -12,7 +16,7 @@ Android        |  iOS
 <img src="screenshots/android.png?raw=true" height="480" />|<img src="screenshots/ios.png?raw=true" height="480" />
 
 
-# Setup
+## Setup
 
 Enable this plugin by calling `UseBottomSheet()` in your `MauiProgram.cs`
 
@@ -36,7 +40,7 @@ public static class MauiProgram
 }
 ```
 
-## XAML usage
+### XAML usage
 
 In order to make use of the plugin within XAML you can use this namespace:
 
@@ -44,14 +48,14 @@ In order to make use of the plugin within XAML you can use this namespace:
 xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
 ```
 
-## Quick usage
+### Quick usage
 
-Simply create a `ContentPage`. Replace the extended class with `BottomSheetPage` in code-behind and in XAML:
+Simply create a `ContentView`. Replace the extended class with `BottomSheet` in code-behind and in XAML:
 
 ```cs
 using The49.Maui.BottomSheet;
 
-public class MySheetPage : BottomSheetPage
+public class MySheet : BottomSheet
 {
     public MySheetPage()
     {
@@ -65,23 +69,26 @@ public class MySheetPage : BottomSheetPage
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
-             x:Class="MyApp.MySheetPage"
-             Title="MySheetPage">
+             x:Class="MyApp.MySheet"
+             Title="MySheet">
             <!-- ... -->
 </the49:BottomSheet>
 ```
 
-The sheet can be opened by calling the `ShowAsync(Window)` method of the page. It can be closed using `DismissAsync()`:
+The sheet can be opened by calling the `ShowAsync()` method of the page. It can be closed using `DismissAsync()`:
 
 ```cs
 
-const page = new MySheetPage();
+const sheet = new MySheet();
 
-// Pass the window in which the sheet should show. Usually accessible from any other page of the app.
-page.ShowAsync(Window);
+// Show the sheet
+sheet.ShowAsync();
+
+// Alternatively, pass the window in which the sheet should show. Usually accessible from any other page of the app.
+sheet.ShowAsync(Window);
 
 // Call to programatically close the sheet
-page.DismissAsync();
+sheet.DismissAsync();
 
 ```
 
@@ -98,11 +105,11 @@ On Android, make sure your application's theme extends the Material3 theme. This
 
 If you already have this file, just make sure the `Maui.MainTheme` style inherits the `Theme.Material3.DayNight` parent.
 
-# API
+## API
 
-This library offers a `BottomSheetPage`, an extension of the `ContentView` with extra functionality
+This library offers a `BottomSheet`, an extension of the `ContentView` with extra functionality
 
-## Properties
+### Properties
 
 The following properties are available to use:
 
@@ -111,6 +118,7 @@ Name          |  Type | Default value | Description | Android | iOS |
 `HasBackdrop` | `bool` | `false` | Displays the sheet as modal. This has no effect on whether or not the sheet can be dismissed using gestures. | ✅ | ✅* |
 `HasHandle` | `bool` | `false` | If `true`, display a drag handle at the top of the sheet | ✅ | ✅ |
 `HandleColor` | `Color` | `null` | Sets the color of the sheet's handle is `HasHandle` is true | ✅ | ❌** |
+`CornerRadius` | `double` | `-1` | Sets the sheet's corner radius | ✅*** | ✅ |
 `IsCancelable` | `bool` | `true` | If `false`, prevents the dismissal of the sheet with user gestures | ✅ | ✅ |
 `Detents` | `DetentsCollection` | `new DetentsCollection() { new ContentDetent() })` | A collection of detents where the sheet will snap to when dragged. (See the Detents section for more info) | ✅ | ✅ |
 `SelectedDetent` | `Detent` | `null` | A two way property defining which detent is currently selected. Changes as the user slides, and updates the sheet's position when changed | ✅ | ✅* |
@@ -120,7 +128,9 @@ Only when the `FullscreenDetent` and/or `MediumDetent` are used those properties
 
 \*\* iOS doesn't give any access to the grabber view
 
-## Detents:
+\*\*\* On Android, setting a custom corner radius will prevent the radius animation when the sheet hits the top of the screen
+
+### Detents:
 
 Detents are snap point at which the sheet will stop when a drag gesture is released [See iOS definition](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller/detent).
 
@@ -128,7 +138,7 @@ On Android only 3 detents are supported (See implemenation section for more info
 
 On iOS, detents are only fully supported for iOS 16 and up. On iOS 15, medium and large detents are used instead [See iOS documentation](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller/detent).
 
-## Available detents
+### Available detents
 
 Name          |  Parameter | Description |
 :-------------------------|:-------------------------|:----|
@@ -155,7 +165,7 @@ Example:
         <!-- Stop at 120dp -->
         <the49:HeightDetent Height="120" />
         <!-- Stop at 45% of the screen height -->
-        <the49:RatioDetent Height="0.45" />
+        <the49:RatioDetent Ratio="0.45" />
         <!-- Stop at the height of the divider view -->
         <the49:AnchorDetent Anchor="{x:Reference divider}" />
     </the49:BottomSheet.Detents>
@@ -171,11 +181,11 @@ Example:
 </the49:BottomSheetPage>
 ```
 
-## Custom detent
+### Custom detent
 
 You can create a custom detent by extending the default `Detent` class and implementing its `GetHeight` abstract method
 
-## Events
+### Events
 
 The following events are available to use:
 
@@ -186,15 +196,15 @@ Name          |  EventArg | Description | Android | iOS |
 `Shown` | `EventArg.Emtpy` | Called when the sheet finished animating in. | ✅ | ✅ |
 
 
-# Platform specifics
+## Platform specifics
 
 On Android, the `Google.Android.Material.BottomSheet.BottomSheetBehavior` is made available under `sheet.Controller.Behavior`, to ensure the property is set, access it when the `Showing` event is fired. Learn more about it here: [BottomSheetBehavior  |  Android Developers](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
 
 On iOS, the `UIKit.UISheetPresentationController` is made available under `sheet.Controller.SheetPresentationController`, to ensure the property is set, access it when the `Showing` event is fired. Learn more about it here: [UISheetPresentationController | Apple Developer Documentation](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller)
 
-# Common questions
+## Common questions
 
-## How can I remove the backdrop on iOS
+### How can I remove the backdrop on iOS
 
 A sheet without backdrop works on iOS only if using `MediumDetent` and `FullscreenDetent`. Using the `OnPlatform` tool replace the detent on iOS to only use those and it will work.
 
@@ -235,7 +245,7 @@ A `IsDefault` property can be used to select the detent that will be shown when 
 </the49:BottomSheetPage>
 ```
 
-## How do I prevent the rounded corner to animate on Android?
+### How do I prevent the rounded corner to animate on Android?
 
 ```cs
 var sheet = new MySheet();
@@ -245,59 +255,24 @@ sheet.Showing += (s, e) =>
 };
 sheet.ShowAsync(Window);
 ```
-## How can I change the detent used when showing the sheet
+### How can I change the detent used when showing the sheet
 
 You can either add `IsDefault="True"` to the detent or set `SelectedDetent` to one of your detents before calling `ShowAsync`.
 
-## How do I change the corner radius?
+### How do I change the corner radius?
 
-This will be different on Android and iOS as they each provide their own design implementation
+Use the `CornerRadius` property.
 
-On iOS
+## Implementation details
 
-```cs
-var sheet = new MySheet();
-sheet.Showing += (s, e) =>
-{
-    sheet.Controller.SheetPresentationController.PreferredCornerRadius = 2;
-};
-sheet.ShowAsync(Window);
-```
-
-On Android (Using Android styles). In your `Platforms/Android/Resources/values/themes.xml` (or equivalent) add the following styles
-
-```xml
-<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
-</style>
-
-<style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
-    <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
-</style>
-
-<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">2dp</item>
-</style>
-```
-
-And in your `<style name="Maui.MainTheme" ...>` add the following item:
-
-
-```xml
-<item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
-```
-
-# Implementation details
-
-## iOS
+### iOS
 
 The bottom sheet on iOS is presented using the `UIViewController`'s `PresentViewController` and configuring the sheet with [UISheetPresentationController](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller/detent).
 
 Detents are created using the [custom](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller/detent/3976719-custom) method
 
 
-## Android
+### Android
 
 The Material library's bottom sheet is used.
 
@@ -308,7 +283,7 @@ A backdrop is added and animated when requested
 Detents are created using a combination of [expandedOffset](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior#setExpandedOffset(int)), [halfExpandedRatio](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior#setHalfExpandedRatio(float)) and [peekHeight](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior#setPeekHeight(int,%20boolean)). These are the only configurable stop points for the bottom sheets, and that is why this library only supports up to 3 detents on Android.
 
 
-# Changes since Gerald Versluis' video
+## Changes since Gerald Versluis' video
 
 If you're coming from [Gerald Versluis' video](https://www.youtube.com/watch?v=JJUm58avADo), a few things have changed. Here is what you need to know:
 
@@ -321,8 +296,8 @@ If you're coming from [Gerald Versluis' video](https://www.youtube.com/watch?v=J
    - `HandleColor`
    - `SelectedDetent`
  - Methods have been renamed
-   - `Show` is now `ShowAync` and completes when the animation of the sheet finishes. It also accepts a boolean to turn off animations
-   - `Dismiss` is now `DismissAync` and completes when the animation of the sheet finishes. It also accepts a boolean to turn off animations
+   - `Show` is now `ShowAsync` and completes when the animation of the sheet finishes. It also accepts a boolean to turn off animations
+   - `Dismiss` is now `DismissAsync` and completes when the animation of the sheet finishes. It also accepts a boolean to turn off animations
 
 
 ---

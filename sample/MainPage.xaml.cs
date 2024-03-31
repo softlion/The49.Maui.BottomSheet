@@ -1,9 +1,10 @@
-﻿using The49.Maui.BottomSheet.DemoPages;
+﻿using The49.Maui.BottomSheet.Sample.DemoPages;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
+using Maui.BottomSheet.Sample.DemoPages;
 
-namespace The49.Maui.BottomSheet;
+namespace The49.Maui.BottomSheet.Sample;
 
 public class DemoEntry
 {
@@ -20,6 +21,18 @@ public partial class MainPage : ContentPage
     }
 
     public ObservableCollection<DemoEntry> Demos => new ObservableCollection<DemoEntry> {
+        new DemoEntry
+        {
+            Title = "Chat demo",
+            Description = "Use a sheet for a chat editor",
+            Command = new Command(OpenChat),
+        },
+        new DemoEntry
+        {
+            Title = "Entry",
+            Description = "Display any page as a bottom sheet",
+            Command = new Command(OpenEntrySheet),
+        },
         new DemoEntry
         {
             Title = "Non-modal sheet",
@@ -82,6 +95,24 @@ public partial class MainPage : ContentPage
         },
         new DemoEntry
         {
+            Title = "Text sizing",
+            Description = "Text should take as much space as it needs",
+            Command = new Command(OpenTextSizing),
+        },
+        new DemoEntry
+        {
+            Title = "With ScrollView",
+            Description = "Let the sheet expand, then scroll",
+            Command = new Command(OpenScrollView),
+        },
+        new DemoEntry
+        {
+            Title = "Corner radius",
+            Description = "specify a Corner radius for the sheet",
+            Command = new Command(OpenCornerRadius),
+        },
+        new DemoEntry
+        {
             Title = "Background color",
             Description = "specify a BackgroundColor for the sheet",
             Command = new Command(OpenBackgroundSheet),
@@ -103,6 +134,24 @@ public partial class MainPage : ContentPage
             Title = "Default detent",
             Description = "define a detent to be opened by default",
             Command = new Command(OpenDefaultDetent),
+        },
+        new DemoEntry
+        {
+            Title = "Open modal page",
+            Description = "A sheet should behave correctly around opening a modal page",
+            Command = new Command(OpenModalPage),
+        },
+        new DemoEntry
+        {
+            Title = "Sizing test",
+            Description = "Check that the content is sized to the sheet",
+            Command = new Command(OpenSizingTest),
+        },
+        new DemoEntry
+        {
+            Title = "Keyboard layout",
+            Description = "Layout should update with keyboard",
+            Command = new Command(OpenKeyboard),
         },
         new DemoEntry
         {
@@ -189,6 +238,12 @@ public partial class MainPage : ContentPage
         };
         page.ShowAsync(Window);
     }
+    async void OpenEntrySheet()
+    {
+        var sheet = new EntrySheet();
+
+        await sheet.ShowAsync();
+    }
     private void OpenFullscreenSheet()
     {
         var page = new SimplePage();
@@ -211,6 +266,19 @@ public partial class MainPage : ContentPage
         page.Background = Colors.Salmon;
         page.ShowAsync(Window);
     }
+    void OpenCornerRadius()
+    {
+        var page = new SimplePage();
+        page.Detents = new DetentsCollection()
+        {
+            new FullscreenDetent(),
+            new ContentDetent(),
+            new AnchorDetent { Anchor = page.Divider },
+        };
+        page.Background = Colors.Salmon;
+        page.CornerRadius = 4;
+        page.ShowAsync(Window);
+    }
     private void OpenRatioSheet()
     {
         var page = new SimplePage();
@@ -229,6 +297,13 @@ public partial class MainPage : ContentPage
             new HeightDetent() { Height = 240 },
         };
         page.ShowAsync(Window);
+    }
+
+    void OpenTextSizing()
+    {
+        var p = new TextSheet();
+
+        p.ShowAsync(Window);
     }
 
     void OpenDismissed()
@@ -292,6 +367,65 @@ public partial class MainPage : ContentPage
         page.HasBackdrop = true;
         page.SetExtraContent(new Button { Text = "Dismiss without animation", Command = new Command(() => page.DismissAsync(false)) });
         page.ShowAsync(Window, false);
+    }
+
+    void OpenScrollView()
+    {
+        var sheet = new ScrollSheet();
+
+        sheet.ShowAsync(Window);
+    }
+
+    void OpenModalPage()
+    {
+        var page = new SimplePage();
+        page.Detents = new DetentsCollection()
+        {
+            new FullscreenDetent(),
+            new ContentDetent(),
+        };
+        page.HasBackdrop = true;
+        var b = new Button
+        {
+            Text = "Go to page"
+        };
+
+        var g = new TapGestureRecognizer
+        {
+            Command = new Command(() =>
+            {
+                page.DismissAsync(false);
+                Shell.Current.GoToAsync("//ModalPage");
+            }),
+        };
+
+        b.GestureRecognizers.Add(g);
+        page.SetExtraContent(b);
+        page.ShowAsync(Window);
+    }
+
+    void OpenSizingTest()
+    {
+        var t = new SizingTest();
+
+        t.ShowAsync(Window);
+    }
+
+    void OpenKeyboard()
+    {
+        var t = new EntrySheet();
+        t.Detents = new DetentsCollection()
+        {
+            new FullscreenDetent(),
+            new MediumDetent(),
+            new ContentDetent(),
+        };
+        t.ShowAsync(Window);
+    }
+
+    void OpenChat()
+    {
+        Shell.Current.Navigation.PushAsync(new ChatPage());
     }
 
     void OpenWithCollectionView()
@@ -378,14 +512,9 @@ public partial class MainPage : ContentPage
         Header.TranslationY = Math.Max(-e.VerticalOffset, -72);
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    void Button_Clicked(object sender, EventArgs e)
     {
-        var item = (DemoEntry)((BindableObject)sender).BindingContext;
-        if (item == null)
-        {
-            return;
-        }
-        item.Command.Execute(null);
+        Shell.Current.GoToAsync("//ModalPage");
     }
 }
 

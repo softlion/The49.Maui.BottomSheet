@@ -1,4 +1,8 @@
-﻿namespace The49.Maui.BottomSheet;
+﻿#nullable enable
+
+using Microsoft.Maui.Controls;
+
+namespace The49.Maui.BottomSheet;
 
 public enum DismissOrigin
 {
@@ -18,11 +22,12 @@ public partial class BottomSheet : ContentView
     public static readonly BindableProperty HandleColorProperty = BindableProperty.Create(nameof(HandleColor), typeof(Color), typeof(BottomSheet), null);
     public static readonly BindableProperty IsCancelableProperty = BindableProperty.Create(nameof(IsCancelable), typeof(bool), typeof(BottomSheet), true);
     public static readonly BindableProperty SelectedDetentProperty = BindableProperty.Create(nameof(SelectedDetent), typeof(Detent), typeof(BottomSheet), null, BindingMode.TwoWay);
+    public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(BottomSheet), -1d);
 
     //public event EventHandler<float> Sliding;
-    public event EventHandler<DismissOrigin> Dismissed;
-    public event EventHandler Showing;
-    public event EventHandler Shown;
+    public event EventHandler<DismissOrigin>? Dismissed;
+    public event EventHandler? Showing;
+    public event EventHandler? Shown;
 
     DismissOrigin _dismissOrigin = DismissOrigin.Gesture;
 
@@ -56,10 +61,16 @@ public partial class BottomSheet : ContentView
         set => SetValue(IsCancelableProperty, value);
     }
 
-    public Detent SelectedDetent
+    public Detent? SelectedDetent
     {
-        get => (Detent)GetValue(SelectedDetentProperty);
+        get => (Detent?)GetValue(SelectedDetentProperty);
         set => SetValue(SelectedDetentProperty, value);
+    }
+
+    public double CornerRadius
+    {
+        get => (double)GetValue(CornerRadiusProperty);
+        set => SetValue(CornerRadiusProperty, value);
     }
 
     public BottomSheet() : base()
@@ -67,18 +78,20 @@ public partial class BottomSheet : ContentView
         Resources.Add(new Style(typeof(Label)));
     }
 
-    public override SizeRequest Measure(double widthConstraint, double heightConstraint, MeasureFlags flags = MeasureFlags.None)
+    public Task ShowAsync(bool animated = true)
     {
-        return new SizeRequest(
-            new Size(widthConstraint, heightConstraint),
-            new Size(widthConstraint, heightConstraint)
-        );
+        var window = Application.Current?.Windows[0];
+        if (window is null)
+        {
+            return Task.CompletedTask;
+        }
+        return ShowAsync(window, animated);
     }
 
     public Task ShowAsync(Window window, bool animated = true)
     {
         var completionSource = new TaskCompletionSource();
-        void OnShown(object sender, EventArgs e)
+        void OnShown(object? sender, EventArgs e)
         {
             Shown -= OnShown;
             completionSource.SetResult();
@@ -89,7 +102,7 @@ public partial class BottomSheet : ContentView
         {
             SelectedDetent = GetDefaultDetent();
         }
-
+        window.AddLogicalChild(this);
         BottomSheetManager.Show(window, this, animated);
         return completionSource.Task;
     }
@@ -98,7 +111,7 @@ public partial class BottomSheet : ContentView
     {
         _dismissOrigin = DismissOrigin.Programmatic;
         var completionSource = new TaskCompletionSource();
-        void OnDismissed(object sender, DismissOrigin origin)
+        void OnDismissed(object? sender, DismissOrigin origin)
         {
             Dismissed -= OnDismissed;
             completionSource.SetResult();
@@ -110,10 +123,16 @@ public partial class BottomSheet : ContentView
 
     internal IEnumerable<Detent> GetEnabledDetents()
     {
-        return Detents.Where(d => d.IsEnabled);
+        var enabledDetents = Detents.Where(d => d.IsEnabled);
+
+        if (enabledDetents.Count() == 0)
+        {
+            return new List<Detent> { new ContentDetent() };
+        }
+        return enabledDetents;
     }
 
-    internal Detent GetDefaultDetent()
+    internal Detent? GetDefaultDetent()
     {
         var detents = GetEnabledDetents();
         var detent = SelectedDetent;
@@ -126,6 +145,7 @@ public partial class BottomSheet : ContentView
 
     internal void NotifyDismissed()
     {
+        this.Parent.RemoveLogicalChild(this);
         Dismissed?.Invoke(this, _dismissOrigin);
     }
 
