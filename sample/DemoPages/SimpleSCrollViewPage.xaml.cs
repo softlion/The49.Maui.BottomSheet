@@ -1,4 +1,4 @@
-namespace The49.Maui.BottomSheet.DemoPages;
+namespace The49.Maui.BottomSheet.Sample.DemoPages;
 
 
 public partial class SimpleScrollViewPage: BottomSheet

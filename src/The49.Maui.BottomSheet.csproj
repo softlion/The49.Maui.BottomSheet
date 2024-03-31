@@ -45,15 +45,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-<<<<<<< HEAD
-		<PackageReference Include="M.BindableProperty.Generator" Version="0.10.0" PrivateAssets="all" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Platforms\iOS\Models\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Include="..\LICENSE.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
@@ -66,45 +57,5 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
-=======
-		<None Include="..\LICENSE.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\NUGET-README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\The49.Maui.BottomSheet.Logo.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
->>>>>>> origin/main
-		<TargetFrameworks>net8.0;net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
-		
-		<Nullable>annotations</Nullable>
-		<!-- Do not warn about Microsoft.Maui.Controls and Microsoft.Maui.Controls.Compatibility anymore -->
-		<SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
-
-		<VersionPrefix>8.0.3</VersionPrefix>
-		<VersionSuffix></VersionSuffix>
-		
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
-		<CreatePackage>false</CreatePackage>
-		<PackageReference Include="M.BindableProperty.Generator" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Maui.Controls" />
-		<None Include="..\LICENSE.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\NUGET-README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\The49.Maui.BottomSheet.Logo.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
 	</ItemGroup>
 </Project>
