@@ -23,6 +23,12 @@ public partial class MainPage : ContentPage
     public ObservableCollection<DemoEntry> Demos => new ObservableCollection<DemoEntry> {
         new DemoEntry
         {
+            Title = "BindableLayout Demo",
+            Description = "A sheet with a BindableLayout",
+            Command = new Command(OpenBindableLayoutSheet),
+        },
+        new DemoEntry
+        {
             Title = "Chat demo",
             Description = "Use a sheet for a chat editor",
             Command = new Command(OpenChat),
@@ -373,6 +379,12 @@ public partial class MainPage : ContentPage
     {
         var sheet = new ScrollSheet();
 
+        sheet.ShowAsync(Window);
+    }
+
+    void OpenBindableLayoutSheet()
+    {
+        var sheet = new BindableLayoutSheet();
         sheet.ShowAsync(Window);
     }
 
