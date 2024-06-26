@@ -145,7 +145,7 @@ public partial class BottomSheet : ContentView
 
     internal void NotifyDismissed()
     {
-        this.Parent.RemoveLogicalChild(this);
+        Parent?.RemoveLogicalChild(this);
         Dismissed?.Invoke(this, _dismissOrigin);
     }
 

@@ -33,13 +33,17 @@ internal class BottomSheetContainer : UIView
         _view = view;
         AddSubview(_view);
     }
+    
     public override void LayoutSubviews()
     {
         base.LayoutSubviews();
-        var h = CalculateTallestDetent(_sheet.Window.Height - BottomSheetManager.KeyboardHeight);
-        _view.Frame = new CGRect(0, 0, Bounds.Width, h);
-        _sheet.Arrange(_view.Frame.ToRectangle());
-        _sheet.Controller.Layout();
+        if (_sheet?.Window != null)
+        {
+            var h = CalculateTallestDetent(_sheet.Window.Height - BottomSheetManager.KeyboardHeight);
+            _view.Frame = new CGRect(0, 0, Bounds.Width, h);
+            _sheet.Arrange(_view.Frame.ToRectangle());
+            _sheet.Controller.Layout();
+        }
     }
 }
 
