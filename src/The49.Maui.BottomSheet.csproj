@@ -32,6 +32,7 @@
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<Version>$(VersionPrefix)$(VersionSuffix)</Version>
+		<Authors>Softlion; The49 Ltd.</Authors>
 		<Company>The49 Ltd.</Company>
 	</PropertyGroup>
 
