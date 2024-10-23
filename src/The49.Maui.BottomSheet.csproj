@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		
 		<RootNamespace>The49.Maui.BottomSheet</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>annotations</Nullable>
+		<Nullable>enable</Nullable>
 
 		<!-- Do not warn about Microsoft.Maui.Controls and Microsoft.Maui.Controls.Compatibility anymore -->
 		<SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
@@ -20,7 +20,6 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<Title>.NET Maui BottomSheet</Title>
 		<Description>.NET MAUI library used to display pages as Bottom Sheets.</Description>
 		<PackageProjectUrl>https://github.com/softlion/The49.Maui.BottomSheet</PackageProjectUrl>
@@ -28,22 +27,23 @@
 		<PackageReadmeFile>NUGET-README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/softlion/The49.Maui.BottomSheet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>dotnet; maui; bottomsheet; the49</PackageTags>
+		<PackageTags>bottomsheet sheet maui</PackageTags>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<Version>$(VersionPrefix)$(VersionSuffix)</Version>
 		<Authors>Softlion; The49 Ltd.</Authors>
-		<Company>The49 Ltd.</Company>
+		<Company>Vapolia; The49 Ltd.</Company>
 	</PropertyGroup>
 
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
-		<CreatePackage>false</CreatePackage>
-	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="M.BindableProperty.Generator" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Maui.Controls" />
+		<PackageReference Include="M.BindableProperty.Generator" PrivateAssets="all" Version="0.11.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0-rc.2.24503.2" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0-rc.2.24473.5" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MAUIVERSION)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MAUIVERSION)" />
+		<PackageReference Include="M.BindableProperty.Generator" Version="0.11.1" />
 	</ItemGroup>
 
 	<ItemGroup>

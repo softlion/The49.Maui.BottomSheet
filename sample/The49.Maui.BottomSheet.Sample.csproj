@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		
 		<OutputType>Exe</OutputType>
 		<RootNamespace>The49.Maui.BottomSheet.Sample</RootNamespace>
@@ -51,11 +51,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
-		<PackageReference Include="Microsoft.Maui.Controls" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
-		<PackageReference Include="The49.Maui.Insets" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MAUIVERSION)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MAUIVERSION)" />
+		<PackageReference Include="The49.Maui.Insets" Version="1.0.0-alpha7" />
 	</ItemGroup>
 
 	<ItemGroup>

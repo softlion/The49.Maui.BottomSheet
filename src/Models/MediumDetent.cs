@@ -2,7 +2,7 @@
 
 public class MediumDetent : RatioDetent
 {
-    public MediumDetent() : base()
+    public MediumDetent()
     {
         Ratio = .5f;
     }
