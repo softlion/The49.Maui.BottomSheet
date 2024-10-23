@@ -14,7 +14,8 @@
 		<SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
 
 		<VersionPrefix>8.0.4</VersionPrefix>
-		<VersionSuffix>-pre1</VersionSuffix>
+		<VersionSuffix>-pre2</VersionSuffix>
+		<PackageId>Vapolia.The49.Maui.BottomSheet</PackageId>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
@@ -22,10 +23,10 @@
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<Title>.NET Maui BottomSheet</Title>
 		<Description>.NET MAUI library used to display pages as Bottom Sheets.</Description>
-		<PackageProjectUrl>https://github.com/the49code/The49.Maui.BottomSheet</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/softlion/The49.Maui.BottomSheet</PackageProjectUrl>
 		<PackageIcon>The49.Maui.BottomSheet.Logo.png</PackageIcon>
 		<PackageReadmeFile>NUGET-README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/the49code/The49.Maui.BottomSheet</RepositoryUrl>
+		<RepositoryUrl>https://github.com/softlion/The49.Maui.BottomSheet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>dotnet; maui; bottomsheet; the49</PackageTags>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>

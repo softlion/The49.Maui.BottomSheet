@@ -1,5 +1,10 @@
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
 
+# Fixed version that do not crash, waiting since a couple of month for the PR
+
+As I can't wait that long, I'm pushing that to nuget in pre release mode.  
+That same package was previously pushed to a private nuget server and used in published apps. So it is stable enough.
+
 # What is Maui.BottomSheet?
 
 Maui.BottomSheet is a .NET MAUI library used to display pages as Bottom Sheets.
