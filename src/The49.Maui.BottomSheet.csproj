@@ -43,7 +43,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0-rc.2.24473.5" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MAUIVERSION)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MAUIVERSION)" />
-		<PackageReference Include="M.BindableProperty.Generator" Version="0.11.1" />
 	</ItemGroup>
 
 	<ItemGroup>
