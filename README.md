@@ -1,11 +1,18 @@
 # <img src="./The49.Maui.BottomSheet.icon.svg?raw=true" height="24" alt="The49.Maui.BottomSheet icon" /> The49.Maui.BottomSheet
 
-[![NuGet Version](https://img.shields.io/nuget/v/The49.Maui.BottomSheet)](https://www.nuget.org/packages/The49.Maui.BottomSheet)
-
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
 
+# Fixed version that do not crash, waiting since a couple of month for the PR
 
+As I can't wait that long, I'm pushing that to nuget in pre release mode.  
+That same package was previously pushed to a private nuget server and used in published apps. So it is stable enough.
 
+[![NuGet][nuget-img]][nuget-link]  
+![Nuget](https://img.shields.io/nuget/dt/Vapolia.The49.Maui.BottomSheet)  
+[![Publish To Nuget](https://github.com/softlion/The49.Maui.BottomSheet/actions/workflows/nuget-push.yml/badge.svg)](https://github.com/softlion/The49.Maui.BottomSheet/actions/workflows/nuget-push.yml)
+
+[nuget-link]: https://www.nuget.org/packages/Vapolia.The49.Maui.BottomSheet/
+[nuget-img]: https://img.shields.io/nuget/v/Vapolia.The49.Maui.BottomSheet
 
 ## What is Maui.BottomSheet?
 
