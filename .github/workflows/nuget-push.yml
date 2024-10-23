@@ -29,7 +29,9 @@ jobs:
 
       - name: Build
         shell: pwsh
-        run: dotnet build -c Release $env:PROJECT
+        run: |
+          dotnet workload restore $env:PROJECT
+          dotnet build -c Release $env:PROJECT
         
       - name: Package & Publish NuGets
         shell: pwsh
