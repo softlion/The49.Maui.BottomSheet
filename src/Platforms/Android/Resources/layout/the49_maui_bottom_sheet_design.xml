@@ -26,7 +26,12 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal|top"
 			style="@style/Widget.Material3.BottomSheet.Modal"
-			app:layout_behavior="@string/bottom_sheet_behavior" />
+			app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+		
+		<!--
+		 removed, this fails to resolve to the correct string on net9 api35
+		 @string/bottom_sheet_behavior 
+		 -->
 
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
