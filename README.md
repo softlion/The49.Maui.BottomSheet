@@ -7,6 +7,10 @@
 As I can't wait that long, I'm pushing that to nuget in pre release mode.  
 That same package was previously pushed to a private nuget server and used in published apps. So it is stable enough.
 
+Notes:
+- this nuget has been built using the net9 branch (net9 rc2) so it is not compatible with net8
+- there is a version of the nuget built using net8. This is https://www.nuget.org/packages/Vapolia.The49.Maui.BottomSheet/8.0.4-ci-11476929167
+
 [![NuGet][nuget-img]][nuget-link]  
 ![Nuget](https://img.shields.io/nuget/dt/Vapolia.The49.Maui.BottomSheet)  
 [![Publish To Nuget](https://github.com/softlion/The49.Maui.BottomSheet/actions/workflows/nuget-push.yml/badge.svg)](https://github.com/softlion/The49.Maui.BottomSheet/actions/workflows/nuget-push.yml)
