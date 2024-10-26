@@ -56,4 +56,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\src\The49.Maui.BottomSheet.csproj" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+	  <PackageReference Include="Xamarin.Google.Android.Material" Version="1.12.0" />
+	</ItemGroup>
 </Project>

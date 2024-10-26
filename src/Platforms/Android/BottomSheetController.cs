@@ -11,6 +11,8 @@ using Google.Android.Material.Internal;
 using Google.Android.Material.Color;
 using Android.Graphics.Drawables;
 using Android.Content;
+using Android.Util;
+using AndroidX.CoordinatorLayout.Widget;
 using Insets = AndroidX.Core.Graphics.Insets;
 
 namespace The49.Maui.BottomSheet;
@@ -362,23 +364,45 @@ public class BottomSheetController
         EnsureStayOnFrontView(_mauiContext.Context);
         if (_windowContainer is null)
         {
-            var container = (FrameLayout)AView.Inflate(_mauiContext.Context, Resource.Layout.the49_maui_bottom_sheet_design, null);
+            //var container = (FrameLayout)AView.Inflate(_mauiContext.Context, Resource.Layout.the49_maui_bottom_sheet_design, null);
 
-            container.ViewAttachedToWindow += ContainerAttachedToWindow;
-            container.ViewDetachedFromWindow += ContainerDetachedFromWindow;
+            var matchParent = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+            var touchOutsideView = new AView(_mauiContext.Context)
+            {
+                LayoutParameters =  matchParent, 
+                Focusable = false, 
+                ImportantForAccessibility = ImportantForAccessibility.No,
+                SoundEffectsEnabled = false
+            };
+            
+            var themedContext = new ContextThemeWrapper(_mauiContext.Context, Resource.Style.Widget_Material3_BottomSheet_Modal);
+            var bottomSheet = new FrameLayout(themedContext, null, 0)
+            {
+                LayoutParameters =  new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent)
+                {
+                    Gravity = (int)(GravityFlags.CenterHorizontal | GravityFlags.Top),
+                    Behavior = new BottomSheetBehavior(),
+                },
+            };
+            
 
+            var coordinatorLayout = new CoordinatorLayout(_mauiContext.Context) { LayoutParameters =  matchParent };
+            coordinatorLayout.AddView(touchOutsideView);
+            coordinatorLayout.AddView(bottomSheet);
+            var container = new FrameLayout(_mauiContext.Context) { LayoutParameters =  matchParent };
+            container.AddView(coordinatorLayout);
+            _behavior = BottomSheetBehavior.From(bottomSheet);
+            
+            
             _windowContainer = new BottomSheetContainer(_mauiContext.Context, container);
             _windowContainer.Backdrop.Click += BackdropClicked;
 
-            _frame = (FrameLayout)container.FindViewById(Resource.Id.design_bottom_sheet);
-
+            _frame = bottomSheet;
             _frame.OutlineProvider = ViewOutlineProvider.Background;
             _frame.ClipToOutline = true;
 
             ViewCompat.SetOnApplyWindowInsetsListener(_windowContainer, new EdgeToEdgeListener(this));
             ViewCompat.SetWindowInsetsAnimationCallback(_frame, new BottomSheetInsetsAnimationCallback(this));
-
-            _behavior = BottomSheetBehavior.From(_frame);
 
             var callback = new BottomSheetCallback(_sheet);
             callback.StateChanged += Callback_StateChanged;
@@ -386,17 +410,7 @@ public class BottomSheetController
         }
     }
 
-    void ContainerDetachedFromWindow(object sender, AView.ViewDetachedFromWindowEventArgs e)
-    {
-
-    }
-
-    void ContainerAttachedToWindow(object sender, AView.ViewAttachedToWindowEventArgs e)
-    {
-
-    }
-
-    void BackdropClicked(object sender, EventArgs e)
+    void BackdropClicked(object? sender, EventArgs e)
     {
         if (_sheet.IsCancelable)
         {
@@ -606,7 +620,7 @@ public class BottomSheetController
         });
     }
 
-    void Callback_StateChanged(object sender, EventArgs e)
+    void Callback_StateChanged(object? sender, EventArgs e)
     {
         if (_isDuringShowingAnimation && (
             Behavior.State == BottomSheetBehavior.StateCollapsed
