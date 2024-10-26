@@ -73,9 +73,10 @@ public partial class BottomSheet : ContentView
         set => SetValue(CornerRadiusProperty, value);
     }
 
-    public BottomSheet() : base()
+    public BottomSheet()
     {
         Resources.Add(new Style(typeof(Label)));
+        BackgroundColor = Colors.White;
     }
 
     public Task ShowAsync(bool animated = true)
