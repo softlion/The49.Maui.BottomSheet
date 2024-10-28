@@ -401,7 +401,7 @@
 
     <Style TargetType="BoxView" x:Key="Divider">
         <Setter Property="HeightRequest" Value="1" />
-        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
         <Setter Property="Color" Value="{DynamicResource ColorOutline}" />
     </Style>
 

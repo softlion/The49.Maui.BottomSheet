@@ -9,7 +9,7 @@
 		<Style TargetType="Button">
 			<Setter Property="BackgroundColor" Value="Transparent" />
 			<Setter Property="TextColor" Value="Black" />
-			<Setter Property="HorizontalOptions" Value="StartAndExpand" />
+			<Setter Property="HorizontalOptions" Value="Start" />
 		</Style>
 	</the49:BottomSheet.Resources>
 

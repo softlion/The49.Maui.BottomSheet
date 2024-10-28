@@ -9,7 +9,7 @@
 		<Style TargetType="Button">
 			<Setter Property="BackgroundColor" Value="Transparent" />
 			<Setter Property="TextColor" Value="Black" />
-			<Setter Property="HorizontalOptions" Value="StartAndExpand" />
+			<Setter Property="HorizontalOptions" Value="Start" />
 		</Style>
 	</the49:BottomSheet.Resources>
 	<VerticalStackLayout Spacing="16">
@@ -21,7 +21,7 @@
                     </Image.Clip>
                 </Image>
             </Border>
-			<VerticalStackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+			<VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Fill">
 				<Label Text="Hot and spicy" />
 				<Label Text="Drink up!" FontSize="10" />
 			</VerticalStackLayout>
