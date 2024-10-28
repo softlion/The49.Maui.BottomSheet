@@ -269,7 +269,11 @@ public partial class MainPage : ContentPage
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
         };
-        page.Background = Colors.Salmon;
+        page.BackgroundColor = Colors.Salmon;
+        page.SetExtraContent(new HorizontalStackLayout
+        {
+            new Button { Text = "Change background color", Command = new Command(() => page.BackgroundColor = RandomColors.RandomColor() ) },
+        });
         page.ShowAsync(Window);
     }
     void OpenCornerRadius()
@@ -527,6 +531,15 @@ public partial class MainPage : ContentPage
     void Button_Clicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync("//ModalPage");
+    }
+}
+public static class RandomColors
+{
+    private static readonly Random random = new();
+
+    public static Color RandomColor()
+    {
+        return Color.FromRgb(random.Next(256), random.Next(256), random.Next(256));
     }
 }
 

@@ -1,25 +1,12 @@
 ﻿using Microsoft.Maui.Handlers;
 
-// #if IOS
-// using PlatformView = UIKit.UIView;
-// #elif ANDROID
-// using PlatformView = Android.Views.View;
-// #else
-// using PlatformView = System.Object;
-// #endif
-
-
 namespace The49.Maui.BottomSheet;
 
 public partial class BottomSheetHandler : ContentViewHandler
 {
-    // new BottomSheet? VirtualView { get; }
-    // new PlatformView? PlatformView { get; }
-
     public static IPropertyMapper<BottomSheet, BottomSheetHandler> BottomSheetMapper =
         new PropertyMapper<BottomSheet, BottomSheetHandler>(Mapper)
         {
-            [nameof(IContentView.Background)] = MapBackground,
             [nameof(BottomSheet.HandleColor)] = MapHandleColor,
             [nameof(BottomSheet.HasBackdrop)] = MapHasBackdrop,
             [nameof(BottomSheet.SelectedDetent)] = MapSelectedDetent,
@@ -31,6 +18,17 @@ public partial class BottomSheetHandler : ContentViewHandler
         {
             [nameof(BottomSheet.DismissAsync)] = MapDismiss,
         };
+
+    public BottomSheetHandler(IPropertyMapper? mapper, CommandMapper? commandMapper) : base(mapper ?? BottomSheetMapper, commandMapper ?? BottomSheetCommandMapper) {}
+    public BottomSheetHandler(IPropertyMapper? mapper) : base(mapper ?? BottomSheetMapper, BottomSheetCommandMapper) {}
+    public BottomSheetHandler() : base(BottomSheetMapper, BottomSheetCommandMapper) {}
+    
+    public override void UpdateValue(string property)
+    {
+        base.UpdateValue(property);
+        if (property is nameof(IContentView.Background) or nameof(VisualElement.BackgroundColor))
+            MapBackground(this, VirtualView);
+    }
 
     static void MapCornerRadius(BottomSheetHandler handler, BottomSheet sheet)
     {
@@ -66,17 +64,4 @@ public partial class BottomSheetHandler : ContentViewHandler
     partial void PlatformUpdateCornerRadius(BottomSheet view);
     partial void Dismiss(BottomSheet view, object request);
 
-    public BottomSheetHandler() : base(BottomSheetMapper, BottomSheetCommandMapper)
-    {
-    }
-
-    public BottomSheetHandler(IPropertyMapper? mapper) 
-        : base(mapper ?? BottomSheetMapper, BottomSheetCommandMapper)
-    {
-    }
-
-    public BottomSheetHandler(IPropertyMapper? mapper, CommandMapper? commandMapper)
-        : base(mapper ?? BottomSheetMapper, commandMapper ?? BottomSheetCommandMapper)
-    {
-    }
 }
