@@ -6,8 +6,9 @@ namespace The49.Maui.BottomSheet;
 
 internal class BottomSheetContainer : UIView
 {
-    BottomSheet _sheet;
-    UIView _view;
+    readonly BottomSheet _sheet;
+    readonly UIView _view;
+    private UIWindow _window;
 
     // Can't get the sheet max height with large and medium detents
     // custom detents are not supported on iOS 15
@@ -20,17 +21,19 @@ internal class BottomSheetContainer : UIView
 
     double CalculateTallestDetent(double heightConstraint)
     {
-        var window = UIApplication.SharedApplication.KeyWindow;
-        var topPadding = window?.SafeAreaInsets.Top ?? 0;
+        var topPadding = _window.SafeAreaInsets.Top;
         var maximumDetentValue = heightConstraint - topPadding - SheetTopSpacing;
-        
         return _sheet.GetEnabledDetents().Select(d => d.GetHeight(_sheet, maximumDetentValue)).Max();
+
+        return 0;
     }
 
-    internal BottomSheetContainer(BottomSheet sheet, UIView view)
+    internal BottomSheetContainer(BottomSheet sheet, UIView view, UIWindow window)
     {
         _sheet = sheet;
         _view = view;
+        _window = window;
+
         AddSubview(_view);
     }
     

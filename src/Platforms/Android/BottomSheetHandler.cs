@@ -6,7 +6,7 @@ public partial class BottomSheetHandler
     {
         sheet.Controller.UpdateBackground();
     }
-    partial void PlatformUpdateHandleColor(BottomSheet view)
+    void PlatformUpdateHandleColor(BottomSheet view)
     {
         view.Controller.UpdateHandleColor();
     }

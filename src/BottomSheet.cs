@@ -1,8 +1,4 @@
-﻿#nullable enable
-
-using Microsoft.Maui.Controls;
-
-namespace The49.Maui.BottomSheet;
+﻿namespace The49.Maui.BottomSheet;
 
 public enum DismissOrigin
 {

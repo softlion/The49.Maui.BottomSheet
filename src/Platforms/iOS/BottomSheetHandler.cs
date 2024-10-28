@@ -6,10 +6,6 @@ public partial class BottomSheetHandler
     {
         view.Controller.UpdateBackground();
     }
-    partial void PlatformUpdateHandleColor(BottomSheet view)
-    {
-        // Not supported on iOS
-    }
 
     partial void Dismiss(BottomSheet view, object request)
     {

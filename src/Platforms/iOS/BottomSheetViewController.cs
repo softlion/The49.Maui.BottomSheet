@@ -8,18 +8,17 @@ namespace The49.Maui.BottomSheet;
 
 public class BottomSheetViewController : UIViewController
 {
-    IMauiContext _windowMauiContext;
-    BottomSheet _sheet;
+    readonly UIWindow _window;
+    readonly IMauiContext _windowMauiContext;
+    readonly BottomSheet _sheet;
     NSObject? _keyboardDidHideObserver;
 
-    public BottomSheetViewController(IMauiContext windowMauiContext, BottomSheet sheet) : base()
+    public BottomSheetViewController(IMauiContext windowMauiContext, BottomSheet sheet, UIWindow window)
     {
         _windowMauiContext = windowMauiContext;
         _sheet = sheet;
-        if (OperatingSystem.IsIOSVersionAtLeast(15))
-        {
-            SheetPresentationController.Delegate = new BottomSheetControllerDelegate(_sheet);
-        }
+        this._window = window;
+        SheetPresentationController.Delegate = new BottomSheetControllerDelegate(_sheet);
     }
 
     public override void ViewDidLoad()
@@ -28,7 +27,7 @@ public class BottomSheetViewController : UIViewController
 
         var container = _sheet.ToPlatform(_windowMauiContext);
 
-        var cv = new BottomSheetContainer(_sheet, container);
+        var cv = new BottomSheetContainer(_sheet, container, _window);
 
         View.AddSubview(cv);
 
@@ -51,7 +50,7 @@ public class BottomSheetViewController : UIViewController
         }
     }
 
-    void KeyboardDidHide(object sender, UIKeyboardEventArgs e)
+    void KeyboardDidHide(object? sender, UIKeyboardEventArgs e)
     {
         Layout();
     }
@@ -59,10 +58,7 @@ public class BottomSheetViewController : UIViewController
     public void Layout()
     {
         _sheet.CachedDetents.Clear();
-        if (OperatingSystem.IsIOSVersionAtLeast(16))
-        {
-            SheetPresentationController.InvalidateDetents();
-        }
+        SheetPresentationController.InvalidateDetents();
     }
     internal void UpdateBackground()
     {
@@ -72,12 +68,7 @@ public class BottomSheetViewController : UIViewController
             View.BackgroundColor = paint.ToColor().ToPlatform();
         }
         else
-        {
-            if (OperatingSystem.IsIOSVersionAtLeast(13))
-            {
-                View.BackgroundColor = UIColor.SystemBackground;
-            }
-        }
+            View.BackgroundColor = UIColor.SystemBackground;
     }
     public override void ViewDidLayoutSubviews()
     {
@@ -85,21 +76,16 @@ public class BottomSheetViewController : UIViewController
         Layout();
     }
 
-    [SupportedOSPlatform("ios15.0")]
     internal static UISheetPresentationControllerDetentIdentifier GetIdentifierForDetent(Detent d)
     {
-        if (d is FullscreenDetent)
+        return d switch
         {
-            return UISheetPresentationControllerDetentIdentifier.Large;
-        }
-        else if (d is RatioDetent ratioDetent && ratioDetent.Ratio == .5)
-        {
-            return UISheetPresentationControllerDetentIdentifier.Medium;
-        }
-        return UISheetPresentationControllerDetentIdentifier.Unknown;
+            FullscreenDetent => UISheetPresentationControllerDetentIdentifier.Large,
+            RatioDetent { Ratio: .5f } => UISheetPresentationControllerDetentIdentifier.Medium,
+            _ => UISheetPresentationControllerDetentIdentifier.Unknown
+        };
     }
 
-    [SupportedOSPlatform("ios15.0")]
     internal void UpdateSelectedIdentifierFromDetent()
     {
         if (_sheet.SelectedDetent is null)
@@ -112,23 +98,17 @@ public class BottomSheetViewController : UIViewController
         });
     }
 
-    [SupportedOSPlatform("ios15.0")]
     internal Detent GetSelectedDetent()
     {
-        if (!OperatingSystem.IsIOSVersionAtLeast(15))
-        {
-            return null;
-        }
         var detents = _sheet.GetEnabledDetents();
         return SheetPresentationController.SelectedDetentIdentifier switch
         {
-            UISheetPresentationControllerDetentIdentifier.Medium => detents.FirstOrDefault(d => d is RatioDetent ratioDetent && ratioDetent.Ratio == .5f),
+            UISheetPresentationControllerDetentIdentifier.Medium => detents.FirstOrDefault(d => d is RatioDetent { Ratio: .5f }),
             UISheetPresentationControllerDetentIdentifier.Large => detents.FirstOrDefault(d => d is FullscreenDetent),
-            UISheetPresentationControllerDetentIdentifier.Unknown or _ => null,
+            _ => null,
         };
     }
 
-    [SupportedOSPlatform("ios15.0")]
     internal void UpdateSelectedDetent()
     {
         _sheet.SelectedDetent = GetSelectedDetent();

@@ -19,11 +19,11 @@ internal class StayOnFrontView : FrameLayout
         }
     }
 
-    void ParentChildViewAdded(object sender, ViewGroup.ChildViewAddedEventArgs e)
+    void ParentChildViewAdded(object? sender, ViewGroup.ChildViewAddedEventArgs e)
     {
         BringToFront();
     }
-    void ParentChildViewRemoved(object sender, ViewGroup.ChildViewRemovedEventArgs e)
+    void ParentChildViewRemoved(object? sender, ViewGroup.ChildViewRemovedEventArgs e)
     {
         BringToFront();
     }

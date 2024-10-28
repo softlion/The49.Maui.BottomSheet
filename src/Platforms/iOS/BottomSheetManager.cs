@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using System.Runtime.InteropServices;
+using Microsoft.Maui.Platform;
 using UIKit;
 namespace The49.Maui.BottomSheet;
 
@@ -12,7 +13,7 @@ internal partial class BottomSheetManager
     static partial void PlatformShow(Window window, BottomSheet sheet, bool animated)
     {
         sheet.Parent = window;
-        var controller = new BottomSheetViewController(window.Handler.MauiContext, sheet);
+        var controller = new BottomSheetViewController(window.Handler.MauiContext, sheet, (UIWindow)window.ToPlatform(window.Handler.MauiContext));
         sheet.Controller = controller;
 
         if (_keyboardWillShowObserver is null)
@@ -95,12 +96,12 @@ internal partial class BottomSheetManager
         parent.PresentViewController(controller, animated, sheet.NotifyShown);
     }
 
-    static void KeyboardDidHide(object sender, UIKeyboardEventArgs e)
+    static void KeyboardDidHide(object? sender, UIKeyboardEventArgs e)
     {
         _keyboardHeight = 0;
     }
 
-    static void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
+    static void KeyboardWillShow(object? sender, UIKeyboardEventArgs e)
     {
         _keyboardHeight = e.FrameEnd.Height;
     }
