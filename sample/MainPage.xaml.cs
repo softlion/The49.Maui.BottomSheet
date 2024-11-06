@@ -211,12 +211,10 @@ public partial class MainPage : ContentPage
         var page = new SimplePage();
         page.HasBackdrop = true;
         page.HasHandle = true;
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
-            new AnchorDetent { Anchor = page.Divider },
-        };
+            new AnchorDetent { Anchor = page.Divider } ];
         page.ShowAsync(Window);
     }
     private void OpenHandleColorSheet()
@@ -225,23 +223,21 @@ public partial class MainPage : ContentPage
         page.HasBackdrop = true;
         page.HasHandle = true;
         page.HandleColor = Colors.Salmon;
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
-        };
+        ];
         page.ShowAsync(Window);
     }
     private void OpenPeekableSheet()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
-        };
+        ];
         page.ShowAsync(Window);
     }
     async void OpenEntrySheet()
@@ -254,21 +250,19 @@ public partial class MainPage : ContentPage
     {
         var page = new SimplePage();
         page.HasBackdrop = true;
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
-        };
+        ];
         page.ShowAsync(Window);
     }
     private void OpenBackgroundSheet()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
-        };
+        ];
         page.BackgroundColor = Colors.Salmon;
         page.SetExtraContent(new HorizontalStackLayout
         {
@@ -279,12 +273,11 @@ public partial class MainPage : ContentPage
     void OpenCornerRadius()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
-        };
+        ];
         page.Background = Colors.Salmon;
         page.CornerRadius = 4;
         page.ShowAsync(Window);
@@ -292,20 +285,18 @@ public partial class MainPage : ContentPage
     private void OpenRatioSheet()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new RatioDetent() { Ratio = .6f },
-        };
+        ];
         page.ShowAsync(Window);
     }
 
     private void OpenHeightSheet()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new HeightDetent() { Height = 240 },
-        };
+        ];
         page.ShowAsync(Window);
     }
 
@@ -330,12 +321,11 @@ public partial class MainPage : ContentPage
     void OpenSelectedDetent()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new MediumDetent(),
             new RatioDetent { Ratio = .2f },
-        };
+        ];
         page.HasBackdrop = false;
         page.PropertyChanged += (s, e) =>
         {
@@ -356,12 +346,11 @@ public partial class MainPage : ContentPage
     void OpenDefaultDetent()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new MediumDetent() { IsDefault = true },
             new RatioDetent { Ratio = .2f },
-        };
+        ];
         page.HasBackdrop = false;
         page.ShowAsync(Window);
     }
@@ -369,11 +358,10 @@ public partial class MainPage : ContentPage
     void OpenNoAnimationSheet()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
-        };
+        ];
         page.HasBackdrop = true;
         page.SetExtraContent(new Button { Text = "Dismiss without animation", Command = new Command(() => page.DismissAsync(false)) });
         page.ShowAsync(Window, false);
@@ -395,11 +383,10 @@ public partial class MainPage : ContentPage
     void OpenModalPage()
     {
         var page = new SimplePage();
-        page.Detents = new DetentsCollection()
-        {
+        page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
-        };
+        ];
         page.HasBackdrop = true;
         var b = new Button
         {
@@ -430,12 +417,11 @@ public partial class MainPage : ContentPage
     void OpenKeyboard()
     {
         var t = new EntrySheet();
-        t.Detents = new DetentsCollection()
-        {
+        t.Detents = [
             new FullscreenDetent(),
             new MediumDetent(),
             new ContentDetent(),
-        };
+        ];
         t.ShowAsync(Window);
     }
 
@@ -448,12 +434,11 @@ public partial class MainPage : ContentPage
     {
         var page = new SimplePage
         {
-            Detents = new DetentsCollection
-            {
+            Detents = [
                 new FullscreenDetent(),
                 new MediumDetent { IsDefault = true },
                 new RatioDetent { Ratio = .2f },
-            },
+            ],
             HasBackdrop = true,
         };
 
@@ -477,12 +462,11 @@ public partial class MainPage : ContentPage
     {
         var page = new SimpleScrollViewPage
         {
-            Detents = new DetentsCollection
-            {
+            Detents = [
                 new FullscreenDetent(),
                 new MediumDetent { IsDefault = true },
                 new RatioDetent { Ratio = .2f },
-            },
+            ],
             HasBackdrop = true,
         };
 

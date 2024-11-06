@@ -396,7 +396,7 @@ public class BottomSheetController
             _behavior = BottomSheetBehavior.From(bottomSheet);
             
             
-            _windowContainer = new BottomSheetContainer(_mauiContext.Context, container);
+            _windowContainer = BottomSheetContainer.Create(_mauiContext.Context, container);
             _windowContainer.Backdrop.Click += BackdropClicked;
 
             _bottomSheetFrame = bottomSheet;
@@ -406,7 +406,7 @@ public class BottomSheetController
             ViewCompat.SetOnApplyWindowInsetsListener(_windowContainer, new EdgeToEdgeListener(this));
             ViewCompat.SetWindowInsetsAnimationCallback(_bottomSheetFrame, new BottomSheetInsetsAnimationCallback(this));
 
-            var callback = new BottomSheetCallback(_sheet);
+            var callback = new BottomSheetCallback();
             callback.StateChanged += Callback_StateChanged;
             _behavior.AddBottomSheetCallback(callback);
         }
@@ -415,9 +415,7 @@ public class BottomSheetController
     void BackdropClicked(object? sender, EventArgs e)
     {
         if (_sheet.IsCancelable)
-        {
             Dismiss(true);
-        }
     }
 
     WindowInsetsCompat WindowInsets

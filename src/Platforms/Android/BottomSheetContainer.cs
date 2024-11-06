@@ -7,22 +7,30 @@ namespace The49.Maui.BottomSheet;
 
 internal class BottomSheetContainer : FrameLayout
 {
-    AView _contentView;
-    BottomSheetBackdrop _backdrop;
+    public AView ContentView { get; }
+    public BottomSheetBackdrop Backdrop { get; }
 
-    public AView ContentView => _contentView;
-    public BottomSheetBackdrop Backdrop => _backdrop;
-
-    public BottomSheetContainer(Context context, AView contentView) : base(context)
+    public static BottomSheetContainer Create(Context context, AView contentView)
     {
-        _contentView = contentView;
-        _backdrop = new BottomSheetBackdrop(context);
-        AddView(_backdrop);
-        AddView(_contentView);
+        var bsc = new BottomSheetContainer(context, contentView);
+        bsc.Init();
+        return bsc;
+    }
+    
+    private BottomSheetContainer(Context context, AView contentView) : base(context)
+    {
+        ContentView = contentView;
+        Backdrop = BottomSheetBackdrop.Create(context);
+    }
+
+    void Init()
+    {
+        AddView(Backdrop);
+        AddView(ContentView);
     }
 
     internal void SetBackdropVisibility(bool hasBackdrop)
     {
-        _backdrop.Visibility = hasBackdrop ? ViewStates.Visible : ViewStates.Gone;
+        Backdrop.Visibility = hasBackdrop ? ViewStates.Visible : ViewStates.Gone;
     }
 }

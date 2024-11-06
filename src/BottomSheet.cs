@@ -99,8 +99,10 @@ public partial class BottomSheet : ContentView
         {
             SelectedDetent = GetDefaultDetent();
         }
+        
         window.AddLogicalChild(this);
-        BottomSheetManager.Show(window, this, animated);
+        
+        BottomSheetManager.Show(window.Handler.MauiContext, this, animated);
         return completionSource.Task;
     }
 

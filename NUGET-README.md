@@ -106,15 +106,15 @@ This library offers a `BottomSheet`, an extension of the `ContentView` with extr
 
 The following properties are available to use:
 
-Name          |  Type | Default value | Description | Android | iOS |
-:-------------------------|:-------------------------|---|:----|---|---|
-`HasBackdrop` | `bool` | `false` | Displays the sheet as modal. This has no effect on whether or not the sheet can be dismissed using gestures. | ✅ | ✅* |
-`HasHandle` | `bool` | `false` | If `true`, display a drag handle at the top of the sheet | ✅ | ✅ |
-`HandleColor` | `Color` | `null` | Sets the color of the sheet's handle is `HasHandle` is true | ✅ | ❌** |
-`CornerRadius` | `double` | `-1` | Sets the sheet's corner radius | ✅*** | ✅ |
-`IsCancelable` | `bool` | `true` | If `false`, prevents the dismissal of the sheet with user gestures | ✅ | ✅ |
-`Detents` | `DetentsCollection` | `new DetentsCollection() { new ContentDetent() })` | A collection of detents where the sheet will snap to when dragged. (See the Detents section for more info) | ✅ | ✅ |
-`SelectedDetent` | `Detent` | `null` | A two way property defining which detent is currently selected. Changes as the user slides, and updates the sheet's position when changed | ✅ | ✅* |
+Name          | Type            | Default value              | Description | Android | iOS |
+:-------------------------|:----------------|----------------------------|:----|---|---|
+`HasBackdrop` | `bool`          | `false`                    | Displays the sheet as modal. This has no effect on whether or not the sheet can be dismissed using gestures. | ✅ | ✅* |
+`HasHandle` | `bool`          | `false`                    | If `true`, display a drag handle at the top of the sheet | ✅ | ✅ |
+`HandleColor` | `Color`         | `null`                     | Sets the color of the sheet's handle is `HasHandle` is true | ✅ | ❌** |
+`CornerRadius` | `double`        | `-1`                       | Sets the sheet's corner radius | ✅*** | ✅ |
+`IsCancelable` | `bool`          | `true`                     | If `false`, prevents the dismissal of the sheet with user gestures | ✅ | ✅ |
+`Detents` | `List<Detents>` | `[ new ContentDetent() ]` | A collection of detents where the sheet will snap to when dragged. (See the Detents section for more info) | ✅ | ✅ |
+`SelectedDetent` | `Detent`        | `null`                     | A two way property defining which detent is currently selected. Changes as the user slides, and updates the sheet's position when changed | ✅ | ✅* |
 
 \* iOS doesn't support the property `largestUndimmedDetentIdentifier` or `selectedDetentIdentifer` for custom detents as of right now. Se iOS documentation for [largestUndimmedDetentIdentifier](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller/3858107-largestundimmeddetentidentifier) and [selectedDetentIdentifer](https://developer.apple.com/documentation/uikit/uisheetpresentationcontroller/3801908-selecteddetentidentifier)
 Only when the `FullscreenDetent` and/or `MediumDetent` are used those properties will work.

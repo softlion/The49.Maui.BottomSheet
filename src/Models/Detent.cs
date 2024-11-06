@@ -11,5 +11,6 @@ public abstract partial class Detent : BindableObject
     [AutoBindable]
     readonly bool isDefault;
 #pragma warning restore CS0169
+    
     public abstract double GetHeight(BottomSheet page, double maxSheetHeight);
 }

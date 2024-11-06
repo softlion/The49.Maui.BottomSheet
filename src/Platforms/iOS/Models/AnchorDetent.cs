@@ -4,7 +4,7 @@ namespace The49.Maui.BottomSheet;
 
 public partial class AnchorDetent
 {
-    partial void UpdateHeight(BottomSheet page, double maxSheetHeight)
+    void UpdateHeight(BottomSheet page, double maxSheetHeight)
     {
         var pageView = (UIView)page.Handler.PlatformView;
         var targetView = (UIView)Anchor.Handler.PlatformView;

@@ -9,11 +9,10 @@ public partial class AnchorDetent: Detent
     [AutoBindable]
     readonly VisualElement anchor;
 #pragma warning restore CS0169
+    
     public override double GetHeight(BottomSheet page, double maxSheetHeight)
     {
         UpdateHeight(page, maxSheetHeight);
         return _height;
     }
-
-    partial void UpdateHeight(BottomSheet page, double maxSheetHeight);
 }

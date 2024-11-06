@@ -6,7 +6,18 @@ using AView = Android.Views.View;
 namespace The49.Maui.BottomSheet;
 internal class BottomSheetBackdrop : AView
 {
-    public BottomSheetBackdrop(Context context) : base(context)
+    public static BottomSheetBackdrop Create(Context context)
+    {
+        var bsb = new BottomSheetBackdrop(context);
+        bsb.Init();
+        return bsb;
+    }
+    
+    private BottomSheetBackdrop(Context context) : base(context)
+    {
+    }
+
+    void Init()
     {
         Clickable = true;
         Background = new ColorDrawable(Android.Graphics.Color.Black);

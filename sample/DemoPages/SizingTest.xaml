@@ -6,20 +6,14 @@
              HasHandle="True"
                    >
     <the49:BottomSheet.Detents>
-        <OnPlatform x:TypeArguments="the49:DetentsCollection">
+        <the49:FullscreenDetent />
+        <the49:RatioDetent Ratio=".95" />
+        <OnPlatform x:TypeArguments="the49:Detent">
             <On Platform="Android">
-                <the49:DetentsCollection>
-                    <the49:FullscreenDetent />
-                    <the49:RatioDetent Ratio=".95" />
-                    <the49:RatioDetent Ratio=".5" />
-                </the49:DetentsCollection>
+                <the49:RatioDetent Ratio=".5" />
             </On>
             <On Platform="iOS">
-                <the49:DetentsCollection>
-                    <the49:FullscreenDetent />
-                    <the49:RatioDetent Ratio=".95" />
-                    <the49:MediumDetent />
-                </the49:DetentsCollection>
+                <the49:MediumDetent />
             </On>
         </OnPlatform>
     </the49:BottomSheet.Detents>
