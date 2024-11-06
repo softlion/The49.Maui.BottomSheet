@@ -560,7 +560,8 @@ public class BottomSheetController
         _bottomSheetFrame.RemoveAllViews();
 
         // The Android view for the page could already have a ContainerView as a parent if it was shown as a bottom sheet before
-        ((ContentViewGroup)_sheet.Handler?.PlatformView)?.RemoveFromParent();
+        //((ContentViewGroup)_sheet.Handler?.PlatformView)?.RemoveFromParent();
+        
         var containerView = _sheet.ToPlatform(_mauiContext);
 
         var c = new FrameLayout(_mauiContext.Context);
@@ -594,13 +595,8 @@ public class BottomSheetController
             UpdateBackground();
 
             var state = GetStateForDetent(_sheet.SelectedDetent);
-
-            var defaultDetent = _sheet.GetDefaultDetent();
             if (state is -1)
-            {
                 state = Behavior.SkipCollapsed ? BottomSheetBehavior.StateExpanded : BottomSheetBehavior.StateCollapsed;
-            }
-
             Behavior.State = state;
 
             containerView.LayoutChange += OnLayoutChange;
@@ -609,7 +605,7 @@ public class BottomSheetController
         });
     }
 
-    void OnLayoutChange(object sender, AView.LayoutChangeEventArgs e)
+    void OnLayoutChange(object? sender, AView.LayoutChangeEventArgs e)
     {
         _sheet.Dispatcher.Dispatch(() =>
         {

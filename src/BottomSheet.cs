@@ -8,24 +8,20 @@ public enum DismissOrigin
 
 public partial class BottomSheet : ContentView
 {
-    public static readonly BindableProperty DetentsProperty = BindableProperty.Create(nameof(Detents), typeof(IList<Detent>), typeof(BottomSheet), default(IList<Detent>),
-        defaultValueCreator: bindable =>
-        {
-            return new List<Detent>();
-        });
+    public static readonly BindableProperty DetentsProperty = BindableProperty.Create(nameof(Detents), typeof(IList<Detent>), typeof(BottomSheet), new List<Detent>());
     public static readonly BindableProperty HasBackdropProperty = BindableProperty.Create(nameof(HasBackdrop), typeof(bool), typeof(BottomSheet), false);
     public static readonly BindableProperty HasHandleProperty = BindableProperty.Create(nameof(HasHandle), typeof(bool), typeof(BottomSheet), false);
-    public static readonly BindableProperty HandleColorProperty = BindableProperty.Create(nameof(HandleColor), typeof(Color), typeof(BottomSheet), null);
+    public static readonly BindableProperty HandleColorProperty = BindableProperty.Create(nameof(HandleColor), typeof(Color), typeof(BottomSheet));
     public static readonly BindableProperty IsCancelableProperty = BindableProperty.Create(nameof(IsCancelable), typeof(bool), typeof(BottomSheet), true);
-    public static readonly BindableProperty SelectedDetentProperty = BindableProperty.Create(nameof(SelectedDetent), typeof(Detent), typeof(BottomSheet), null, BindingMode.TwoWay);
+    public static readonly BindableProperty SelectedDetentProperty = BindableProperty.Create(nameof(SelectedDetent), typeof(Detent), typeof(BottomSheet), defaultBindingMode: BindingMode.TwoWay);
     public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(BottomSheet), -1d);
+
+    DismissOrigin _dismissOrigin = DismissOrigin.Gesture;
 
     //public event EventHandler<float> Sliding;
     public event EventHandler<DismissOrigin>? Dismissed;
     public event EventHandler? Showing;
     public event EventHandler? Shown;
-
-    DismissOrigin _dismissOrigin = DismissOrigin.Gesture;
 
     public IList<Detent> Detents
     {
@@ -79,9 +75,7 @@ public partial class BottomSheet : ContentView
     {
         var window = Application.Current?.Windows[0];
         if (window is null)
-        {
             return Task.CompletedTask;
-        }
         return ShowAsync(window, animated);
     }
 
@@ -95,14 +89,10 @@ public partial class BottomSheet : ContentView
         }
         Shown += OnShown;
 
-        if (SelectedDetent is null)
-        {
-            SelectedDetent = GetDefaultDetent();
-        }
-        
+        SelectedDetent ??= GetDefaultDetent();
         window.AddLogicalChild(this);
-        
         BottomSheetManager.Show(window.Handler.MauiContext, this, animated);
+
         return completionSource.Task;
     }
 
@@ -119,33 +109,34 @@ public partial class BottomSheet : ContentView
         Handler?.Invoke(nameof(DismissAsync), animated);
         return completionSource.Task;
     }
-
-    internal IEnumerable<Detent> GetEnabledDetents()
+    
+    internal void NotifyDismissed()
     {
-        var enabledDetents = Detents.Where(d => d.IsEnabled);
-
-        if (enabledDetents.Count() == 0)
+        var parent = Parent;
+        if (parent != null)
         {
-            return new List<Detent> { new ContentDetent() };
+            parent.RemoveLogicalChild(this);
+            Dismissed?.Invoke(this, _dismissOrigin);
         }
-        return enabledDetents;
+    }
+
+    internal List<Detent> GetEnabledDetents()
+    {
+        var enabledDetents = Detents.Where(d => d.IsEnabled).ToList();
+
+        if (enabledDetents.Count > 0)
+            return enabledDetents;
+
+        return new List<Detent> { new ContentDetent() };
     }
 
     internal Detent? GetDefaultDetent()
     {
-        var detents = GetEnabledDetents();
         var detent = SelectedDetent;
-        if (SelectedDetent is not null)
-        {
-            return SelectedDetent;
-        }
-        return detents.FirstOrDefault(d => d.IsDefault);
-    }
+        if (detent != null)
+            return detent;
 
-    internal void NotifyDismissed()
-    {
-        Parent?.RemoveLogicalChild(this);
-        Dismissed?.Invoke(this, _dismissOrigin);
+        return GetEnabledDetents().FirstOrDefault(d => d.IsDefault);
     }
 
     internal Brush? BackgroundBrush
@@ -153,23 +144,13 @@ public partial class BottomSheet : ContentView
         get
         {
             if (!Background.IsEmpty)
-            {
                 return Background;
-            }
             if (BackgroundColor.IsNotDefault())
-            {
                 return new SolidColorBrush(BackgroundColor);
-            }
             return null;
         }
     }
 
-    internal void NotifyShowing()
-    {
-        Showing?.Invoke(this, EventArgs.Empty);
-    }
-    internal void NotifyShown()
-    {
-        Shown?.Invoke(this, EventArgs.Empty);
-    }
+    internal void NotifyShowing() => Showing?.Invoke(this, EventArgs.Empty);
+    internal void NotifyShown() => Shown?.Invoke(this, EventArgs.Empty);
 }

@@ -14,3 +14,4 @@ public abstract partial class Detent : BindableObject
     
     public abstract double GetHeight(BottomSheet page, double maxSheetHeight);
 }
+    

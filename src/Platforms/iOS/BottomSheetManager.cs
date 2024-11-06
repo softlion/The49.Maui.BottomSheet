@@ -16,8 +16,8 @@ internal partial class BottomSheetManager
     static void PlatformShow(IMauiContext mauiContext, BottomSheet sheet, bool animated)
     {
         var controller = new BottomSheetViewController(mauiContext, sheet, (UIWindow)sheet.Parent.ToPlatform(mauiContext));
-        sheet.Controller = controller;
-
+        sheet.Controller = controller; 
+            
         if (_keyboardWillShowObserver is null)
             _keyboardWillShowObserver = UIKeyboard.Notifications.ObserveWillShow(KeyboardWillShow);
         if (_keyboardDidHideObserver is null)
