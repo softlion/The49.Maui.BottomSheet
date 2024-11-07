@@ -1,14 +1,16 @@
-﻿using Maui.BindableProperty.Generator.Core;
-
-namespace The49.Maui.BottomSheet;
+﻿namespace The49.Maui.BottomSheet;
 
 [ContentProperty(nameof(Ratio))]
-public partial class RatioDetent : Detent
+public class RatioDetent : Detent
 {
-#pragma warning disable CS0169
-    [AutoBindable]
-    readonly float ratio;
-#pragma warning restore CS0169
+    public static readonly BindableProperty RatioProperty = BindableProperty.Create(nameof(Ratio), typeof(float), typeof(RatioDetent), defaultValue: 0f);
+
+    public float Ratio
+    {
+        get => (float)GetValue(RatioProperty);
+        set => SetValue(RatioProperty, value);
+    }
+    
     public override double GetHeight(BottomSheet page, double maxSheetHeight)
     {
         return maxSheetHeight * Ratio;

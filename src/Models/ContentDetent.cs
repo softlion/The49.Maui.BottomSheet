@@ -1,6 +1,6 @@
 ﻿namespace The49.Maui.BottomSheet;
 
-public partial class ContentDetent : Detent
+public class ContentDetent : Detent
 {
     public override double GetHeight(BottomSheet page, double maxSheetHeight)
     {

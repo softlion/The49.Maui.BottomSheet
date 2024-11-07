@@ -1,14 +1,16 @@
-﻿using Maui.BindableProperty.Generator.Core;
-
-namespace The49.Maui.BottomSheet;
+﻿namespace The49.Maui.BottomSheet;
 
 [ContentProperty(nameof(Height))]
-public partial class HeightDetent : Detent
+public class HeightDetent : Detent
 {
-#pragma warning disable CS0169
-    [AutoBindable]
-    readonly double height;
-#pragma warning restore CS0169
+    public static readonly BindableProperty HeightProperty = BindableProperty.Create(nameof(Height), typeof(double), typeof(HeightDetent), defaultValue: 0.0);
+
+    public double Height
+    {
+        get => (double)GetValue(HeightProperty);
+        set => SetValue(HeightProperty, value);
+    }
+
     public override double GetHeight(BottomSheet page, double maxSheetHeight)
     {
         return Height;

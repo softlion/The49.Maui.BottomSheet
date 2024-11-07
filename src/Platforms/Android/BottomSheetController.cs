@@ -1,4 +1,6 @@
-﻿using Android.Views;
+﻿#define USE_MATERIAL3
+
+using Android.Views;
 using Microsoft.Maui.Platform;
 using Google.Android.Material.BottomSheet;
 using Android.Widget;
@@ -351,7 +353,7 @@ public class BottomSheetController
         }
     }
 
-    static void EnsureStayOnFrontView(Context context)
+    private void EnsureStayOnFrontView(Context context)
     {
         if (_stayOnFront is null || !_stayOnFront.IsAttachedToWindow)
         {
@@ -378,7 +380,13 @@ public class BottomSheetController
                 SoundEffectsEnabled = false
             };
             
-            var bottomSheet = new FrameLayout(_mauiContext.Context, null, 0, Resource.Style.Widget_Material3_BottomSheet_Modal)
+#if USE_MATERIAL3
+            var frameStyle = Resource.Style.Widget_Material3_BottomSheet_Modal;
+#else
+            var frameStyle = Resource.Style.Widget_MaterialComponents_BottomSheet_Modal;
+#endif
+            
+            var bottomSheet = new FrameLayout(_mauiContext.Context, null, 0, frameStyle)
             {
                 LayoutParameters =  new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent)
                 {
