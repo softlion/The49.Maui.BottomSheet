@@ -2,7 +2,7 @@
 
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
 
-# Fixed version that do not crash + fixed features + net9 (unmaintained net8 available on another branch)
+# Fixed version that do not crash + mixed net8/net9 nuget
 
 As I can't wait that long, I'm pushing that to nuget in pre release mode.  
 That same package was previously pushed to a private nuget server and used in published apps. So it is stable enough.
