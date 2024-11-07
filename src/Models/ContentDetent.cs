@@ -18,6 +18,12 @@ public partial class ContentDetent : Detent
         // HACK: from 'page.Window.Width' to 'page.Window?.Width ?? page.Width' 
         var r = page.Content.Measure(page.Window?.Width ?? page.Width - page.Padding.HorizontalThickness, maxSheetHeight);
 
-        return Math.Min(maxSheetHeight, r.Height + page.Padding.VerticalThickness);
+#if NET8_0
+        var height = r.Request.Height;
+#else
+        var height = r.Height;
+#endif
+        
+        return Math.Min(maxSheetHeight, height + page.Padding.VerticalThickness);
     }
 }
