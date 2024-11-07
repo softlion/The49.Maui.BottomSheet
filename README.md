@@ -2,14 +2,24 @@
 
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
 
-# Fixed version that do not crash, waiting since a couple of month for the PR
+# Fixed version that do not crash + fixed features + net9 (unmaintained net8 available on another branch)
 
 As I can't wait that long, I'm pushing that to nuget in pre release mode.  
 That same package was previously pushed to a private nuget server and used in published apps. So it is stable enough.
 
-Notes:
-- this nuget has been built using the net9 branch (net9 rc2) so it is not compatible with net8
-- there is a version of the nuget built using net8. This is https://www.nuget.org/packages/Vapolia.The49.Maui.BottomSheet/8.0.4-ci-11476929167
+Additionally, I fixed a few new issues:
+- (ios) the background color was not set, because of the way the Mapper dictionary was declared
+- (android) the background color was not set correctly on Android. It looks like it worked, but it did not in many conditions.
+- (android) some apps crash with a message like "the bottomsheetbehavior can not be found". I was not able to determine what dependency cause that issue. Anyway that is fixed by converting the android xml layout into C# android code.
+- removed the dependency on MainPage, use the specified Window instead
+- Merged https://github.com/the49ltd/The49.Maui.BottomSheet/pull/133
+- (android) Fix "no sliding away" blocked in hidden mode
+- (android) Fix bottom sheet sometime displayed in hidden mode
+- (android) Fix handle not appearing
+- (android) (Demo app) Fix can't open the same demo item twice in a row
+- Breaking: removed DetentsCollection for simplicity. Use a ResourceDictionary to choose between detents with OnPlatform (see sample app)
+- (android) Uses Material3 design. That is working even if your app uses Material2. 
+
 
 [![NuGet][nuget-img]][nuget-link]  
 ![Nuget](https://img.shields.io/nuget/dt/Vapolia.The49.Maui.BottomSheet)  
@@ -78,11 +88,11 @@ public class MySheet : BottomSheet
 
 ```xml
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
-             x:Class="MyApp.MySheet"
-             Title="MySheet">
-            <!-- ... -->
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+                   x:Class="MyApp.MySheet"
+                   Title="MySheet">
+   <!-- ... -->
 </the49:BottomSheet>
 ```
 
@@ -110,7 +120,7 @@ On Android, make sure your application's theme extends the Material3 theme. This
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-	<style name="Maui.MainTheme" parent="Theme.Material3.DayNight"></style>
+   <style name="Maui.MainTheme" parent="Theme.Material3.DayNight"></style>
 </resources>
 ```
 
@@ -164,31 +174,31 @@ Example:
 
 ```xml
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
-             x:Class="MyApp.SheetPage"
-             Title="SheetPage">
-    <the49:BottomSheet.Detents>
-        <!-- Stop at the height of the screen -->
-        <the49:FullscreenDetent />
-        <!-- Stop at the height of the page content -->
-        <the49:ContentDetent />
-        <!-- Stop at 120dp -->
-        <the49:HeightDetent Height="120" />
-        <!-- Stop at 45% of the screen height -->
-        <the49:RatioDetent Ratio="0.45" />
-        <!-- Stop at the height of the divider view -->
-        <the49:AnchorDetent Anchor="{x:Reference divider}" />
-    </the49:BottomSheet.Detents>
-    <VerticalStackLayout Spacing="16">
-        <VerticalStackLayout>
-            <!-- some content -->
-        </VerticalStackLayout>
-        <BoxView x:Name="divider" />
-        <VerticalStackLayout>
-            <!-- more content -->
-        </VerticalStackLayout>
-    </VerticalStackLayout>
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+                   x:Class="MyApp.SheetPage"
+                   Title="SheetPage">
+   <the49:BottomSheet.Detents>
+      <!-- Stop at the height of the screen -->
+      <the49:FullscreenDetent />
+      <!-- Stop at the height of the page content -->
+      <the49:ContentDetent />
+      <!-- Stop at 120dp -->
+      <the49:HeightDetent Height="120" />
+      <!-- Stop at 45% of the screen height -->
+      <the49:RatioDetent Ratio="0.45" />
+      <!-- Stop at the height of the divider view -->
+      <the49:AnchorDetent Anchor="{x:Reference divider}" />
+   </the49:BottomSheet.Detents>
+   <VerticalStackLayout Spacing="16">
+      <VerticalStackLayout>
+         <!-- some content -->
+      </VerticalStackLayout>
+      <BoxView x:Name="divider" />
+      <VerticalStackLayout>
+         <!-- more content -->
+      </VerticalStackLayout>
+   </VerticalStackLayout>
 </the49:BottomSheetPage>
 ```
 
@@ -227,32 +237,32 @@ A `IsDefault` property can be used to select the detent that will be shown when 
 
 ```xml
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
-             x:Class="MyApp.SheetPage"
-             Title="SheetPage">
-    <the49:BottomSheet.Detents>
-        <OnPlatform>
-            <On Platform="Android">
-                <the49:FullscreenDetent />
-                <the49:ContentDetent />
-                <the49:AnchorDetent Anchor="{x:Reference divider}" />
-            </On>
-            <On Platform="iOS">
-                <the49:FullscreenDetent />
-                <the49:MediumDetent />
-            </On>
-        </OnPlatform>
-    </the49:BottomSheet.Detents>
-    <VerticalStackLayout Spacing="16">
-        <VerticalStackLayout>
-            <!-- some content -->
-        </VerticalStackLayout>
-        <BoxView x:Name="divider" />
-        <VerticalStackLayout>
-            <!-- more content -->
-        </VerticalStackLayout>
-    </VerticalStackLayout>
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+                   x:Class="MyApp.SheetPage"
+                   Title="SheetPage">
+   <the49:BottomSheet.Detents>
+      <OnPlatform>
+         <On Platform="Android">
+            <the49:FullscreenDetent />
+            <the49:ContentDetent />
+            <the49:AnchorDetent Anchor="{x:Reference divider}" />
+         </On>
+         <On Platform="iOS">
+            <the49:FullscreenDetent />
+            <the49:MediumDetent />
+         </On>
+      </OnPlatform>
+   </the49:BottomSheet.Detents>
+   <VerticalStackLayout Spacing="16">
+      <VerticalStackLayout>
+         <!-- some content -->
+      </VerticalStackLayout>
+      <BoxView x:Name="divider" />
+      <VerticalStackLayout>
+         <!-- more content -->
+      </VerticalStackLayout>
+   </VerticalStackLayout>
 </the49:BottomSheetPage>
 ```
 
@@ -298,15 +308,15 @@ Detents are created using a combination of [expandedOffset](https://developer.an
 
 If you're coming from [Gerald Versluis' video](https://www.youtube.com/watch?v=JJUm58avADo), a few things have changed. Here is what you need to know:
 
- - Property names have been updated to be more consistent, discoverable and aligned with standard MAUI properties:
+- Property names have been updated to be more consistent, discoverable and aligned with standard MAUI properties:
    - `ShowHandle` is now `HasHandle`
    - `Cancelable` is now `IsCancelable`
    - `IsModal` is now `HasBackdrop`
 
- - 2 new properties have been added:
+- 2 new properties have been added:
    - `HandleColor`
    - `SelectedDetent`
- - Methods have been renamed
+- Methods have been renamed
    - `Show` is now `ShowAsync` and completes when the animation of the sheet finishes. It also accepts a boolean to turn off animations
    - `Dismiss` is now `DismissAsync` and completes when the animation of the sheet finishes. It also accepts a boolean to turn off animations
 
