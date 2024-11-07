@@ -2,9 +2,11 @@
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+             xmlns:demoPages="clr-namespace:The49.Maui.BottomSheet.Sample.DemoPages"
              x:Class="The49.Maui.BottomSheet.Sample.DemoPages.SimplePage"
              x:Name="this"
              Padding="16, 32">
+	
 	<the49:BottomSheet.Resources>
 		<Style TargetType="Button">
 			<Setter Property="BackgroundColor" Value="Transparent" />
@@ -12,7 +14,9 @@
 			<Setter Property="HorizontalOptions" Value="Start" />
 		</Style>
 	</the49:BottomSheet.Resources>
+	
 	<VerticalStackLayout Spacing="16">
+		
 		<HorizontalStackLayout Spacing="16" Padding="16, 0">
 			<Border StrokeShape="RoundRectangle 8" StrokeThickness="0">
                 <Image Source="spicy.jpg" HeightRequest="80" WidthRequest="80">
@@ -27,15 +31,19 @@
 			</VerticalStackLayout>
 		</HorizontalStackLayout>
 		<BoxView Style="{StaticResource Divider}" x:Name="divider" />
+		
 		<ContentView x:Name="extra" />
+		
 		<VerticalStackLayout BindableLayout.ItemsSource="{Binding Actions, Source={x:Reference this}}">
 			<BindableLayout.ItemTemplate>
-				<DataTemplate>
+				<DataTemplate x:DataType="demoPages:ListAction">
 					<Button Text="{Binding Title}" Padding="16, 8" Command="{Binding Command}" />
 				</DataTemplate>
 			</BindableLayout.ItemTemplate>
 		</VerticalStackLayout>
+		
 	</VerticalStackLayout>
+	
 </the49:BottomSheet>
 <!-- Photo by <a href="https://unsplash.com/@medion4you?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Norbert Braun
 </a> on

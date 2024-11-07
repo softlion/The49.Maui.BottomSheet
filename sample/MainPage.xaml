@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
              xmlns:sample="clr-namespace:The49.Maui.BottomSheet.Sample"
              x:Class="The49.Maui.BottomSheet.Sample.MainPage"
              x:Name="this"
-             NavigationPage.HasNavigationBar="False"
-             >
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
         <Style TargetType="Grid">
             <Setter Property="VisualStateManager.VisualStateGroups">
@@ -24,17 +22,15 @@
             </Setter>
         </Style>
     </ContentPage.Resources>
+    
     <Grid RowDefinitions="Auto, *">
-        <HorizontalStackLayout Padding="16, 0, 0, 8"
-                               BackgroundColor="{StaticResource Primary}"
-                               x:Name="Header">
+        <HorizontalStackLayout x:Name="Header" Padding="16, 0, 0, 8" BackgroundColor="{StaticResource Primary}">
             <Label Text="Maui.BottomSheet"
                    Style="{StaticResource HeadlineLarge}"
                    TextColor="{StaticResource White}"
                    VerticalOptions="End" />
-            <Button Text="OpenModalPage"
-                    Clicked="Button_Clicked" />
         </HorizontalStackLayout>
+        
         <CollectionView Grid.Row="1"
                         BackgroundColor="Transparent"
                         Scrolled="list_Scrolled"
@@ -44,19 +40,15 @@
                         x:Name="list">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="sample:DemoEntry">
-                    <Grid ColumnDefinitions="Auto, *"
-                          Padding="16, 4"
-                          HeightRequest="72">
-                        <VerticalStackLayout Grid.Column="1"
-                                             VerticalOptions="Center">
-                            <Label Text="{Binding Title}"
-                                   Style="{StaticResource BodyLarge}" />
-                            <Label Text="{Binding Description}"
-                                   Style="{StaticResource BodyMedium}" />
+                    <Grid ColumnDefinitions="Auto, *" Padding="16, 4" HeightRequest="72">
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="{Binding Title}" Style="{StaticResource BodyLarge}" />
+                            <Label Text="{Binding Description}" Style="{StaticResource BodyMedium}" />
                         </VerticalStackLayout>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        
     </Grid>
 </ContentPage>

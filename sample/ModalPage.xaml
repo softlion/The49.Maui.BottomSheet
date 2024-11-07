@@ -2,9 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="The49.Maui.BottomSheet.Sample.ModalPage"
-             Title="ModalPage"
+             Title="Modal Page"
              Shell.PresentationMode="ModalAnimated">
-    <VerticalStackLayout>
-        <Button Text="Open sheet" Clicked="Button_Clicked" />
+    
+    <VerticalStackLayout Padding="10" Spacing="20">
+        <Label Text="This is a modal page" />
+        <Button Text="Open sheet" Clicked="Button_Clicked" HorizontalOptions="Center" />
     </VerticalStackLayout>
+    
 </ContentPage>

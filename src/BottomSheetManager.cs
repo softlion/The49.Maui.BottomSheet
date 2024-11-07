@@ -2,9 +2,9 @@
 
 internal partial class BottomSheetManager
 {
-    internal static void Show(IMauiContext mauiContext, BottomSheet sheet, bool animated)
+    internal static void Show(IMauiContext mauiContext, BottomSheet sheet, bool animated, bool aboveEverything)
     {
-        PlatformShow(mauiContext, sheet, animated);
+        PlatformShow(mauiContext, sheet, animated, aboveEverything);
         //sheet.SizeChanged += OnSizeChanged;
     }
 

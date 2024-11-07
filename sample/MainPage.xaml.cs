@@ -1,17 +1,9 @@
 ﻿using The49.Maui.BottomSheet.Sample.DemoPages;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using Maui.BottomSheet.Sample.DemoPages;
 
 namespace The49.Maui.BottomSheet.Sample;
-
-public class DemoEntry
-{
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public ICommand Command { get; set; }
-}
 
 public partial class MainPage : ContentPage
 {
@@ -20,7 +12,15 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    public ObservableCollection<DemoEntry> Demos => new ObservableCollection<DemoEntry> {
+    public ObservableCollection<DemoEntry> Demos => new()
+    {
+        //TODO: can't close that modal. Why ?
+        // new DemoEntry
+        // {
+        //     Title = "Open Modal Page",
+        //     Description = "Open the demo modal page",
+        //     Command = new Command(() => Shell.Current.GoToAsync("//ModalPage")),
+        // },
         new DemoEntry
         {
             Title = "BindableLayout Demo",
@@ -174,14 +174,26 @@ public partial class MainPage : ContentPage
 #if ANDROID
         new DemoEntry
         {
-            Title = "Customize behavior",
+            Title = "[Android] Customize behavior",
             Description = "access the Android BottomSheetBehavior",
             Command = new Command(OpenCustomizeBehavior),
+        },
+        new DemoEntry
+        {
+            Title = "[Android] Modal Sheet (Inside Page)",
+            Description = "Shows behind the navigation bar, flyout, etc.",
+            Command = new Command(OpenModalSheetWithinPage),
+        },
+        new DemoEntry
+        {
+            Title = "[Android] Non-Modal Sheet (Inside Page)",
+            Description = "Shows behind the navigation bar, flyout, etc.",
+            Command = new Command(OpenNonModalSheetWithinPage),
         },
 #elif IOS
         new DemoEntry
         {
-            Title = "Customize behavior",
+            Title = "[iOS] Customize behavior",
             Description = "access the iOS UISheetPresentationControllerDelegate",
             Command = new Command(OpenCustomizeBehavior),
         },
@@ -191,45 +203,58 @@ public partial class MainPage : ContentPage
     private void OpenSimpleSheet()
     {
         var page = new SimplePage();
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
+    
     private void OpenModalSheet()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
-        page.ShowAsync(Window);
+        var page = new SimplePage
+        {
+            HasBackdrop = true
+        };
+        page.ShowAsync();
     }
+    
     private void OpenNotCancelableSheet()
     {
-        var page = new SimplePage();
-        page.IsCancelable = false;
-        page.HasBackdrop = true;
-        page.ShowAsync(Window);
+        var page = new SimplePage
+        {
+            IsCancelable = false,
+            HasBackdrop = true
+        };
+        page.ShowAsync();
     }
+    
     private void OpenHandleSheet()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
-        page.HasHandle = true;
+        var page = new SimplePage
+        {
+            HasBackdrop = true,
+            HasHandle = true
+        };
         page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider } ];
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
+    
     private void OpenHandleColorSheet()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
-        page.HasHandle = true;
-        page.HandleColor = Colors.Salmon;
+        var page = new SimplePage
+        {
+            HasBackdrop = true,
+            HasHandle = true,
+            HandleColor = Colors.Salmon,
+        };
         page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
         ];
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
+    
     private void OpenPeekableSheet()
     {
         var page = new SimplePage();
@@ -238,161 +263,169 @@ public partial class MainPage : ContentPage
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
         ];
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
+    
     async void OpenEntrySheet()
     {
         var sheet = new EntrySheet();
-
         await sheet.ShowAsync();
     }
+    
     private void OpenFullscreenSheet()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
-        page.Detents = [
-            new FullscreenDetent(),
-        ];
-        page.ShowAsync(Window);
+        var page = new SimplePage
+        {
+            HasBackdrop = true,
+            Detents = [new FullscreenDetent()]
+        };
+        page.ShowAsync();
     }
+    
     private void OpenBackgroundSheet()
     {
-        var page = new SimplePage();
+        var page = new SimplePage
+        {
+            BackgroundColor = Colors.Salmon
+        };
         page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
         ];
-        page.BackgroundColor = Colors.Salmon;
-        page.SetExtraContent(new HorizontalStackLayout
+        page.ExtraContent = new HorizontalStackLayout
         {
             new Button { Text = "Change background color", Command = new Command(() => page.BackgroundColor = RandomColors.RandomColor() ) },
-        });
-        page.ShowAsync(Window);
+        };
+        page.ShowAsync();
     }
+
     void OpenCornerRadius()
     {
-        var page = new SimplePage();
+        var page = new SimplePage
+        {
+            Background = Colors.Salmon,
+            CornerRadius = 10
+        };
         page.Detents = [
             new FullscreenDetent(),
             new ContentDetent(),
             new AnchorDetent { Anchor = page.Divider },
         ];
-        page.Background = Colors.Salmon;
-        page.CornerRadius = 4;
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
     private void OpenRatioSheet()
     {
-        var page = new SimplePage();
-        page.Detents = [
-            new RatioDetent() { Ratio = .6f },
-        ];
-        page.ShowAsync(Window);
+        var page = new SimplePage { Detents = [new RatioDetent { Ratio = .6f } ] };
+        page.ShowAsync();
     }
 
     private void OpenHeightSheet()
     {
-        var page = new SimplePage();
-        page.Detents = [
-            new HeightDetent() { Height = 240 },
-        ];
-        page.ShowAsync(Window);
+        var page = new SimplePage { Detents = [new HeightDetent { Height = 240 }] };
+        page.ShowAsync();
     }
 
     void OpenTextSizing()
     {
         var p = new TextSheet();
-
-        p.ShowAsync(Window);
+        p.ShowAsync();
     }
 
     void OpenDismissed()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
+        var page = new SimplePage
+        {
+            HasBackdrop = true
+        };
         page.Dismissed += (s, e) =>
         {
             DisplayAlert("Sheet was dismissed", e == DismissOrigin.Gesture ? "Sheet was dismissed by a user gesture" : "Sheet was dismissed programmatically", "close");
         };
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
 
     void OpenSelectedDetent()
     {
-        var page = new SimplePage();
-        page.Detents = [
-            new FullscreenDetent(),
-            new MediumDetent(),
-            new RatioDetent { Ratio = .2f },
-        ];
-        page.HasBackdrop = false;
-        page.PropertyChanged += (s, e) =>
+        var page = new SimplePage
         {
-            if (e.PropertyName == nameof(page.SelectedDetent))
-            {
-                Toast.Make($"Selected Detent is now {(page.SelectedDetent is null ? "unknown" : page.SelectedDetent.ToString())}").Show();
-            }
+            Detents =
+            [
+                new FullscreenDetent(),
+                new MediumDetent(),
+                new RatioDetent { Ratio = .2f },
+            ],
+            HasBackdrop = false
         };
-        page.SetExtraContent(new HorizontalStackLayout
+        page.ExtraContent = new HorizontalStackLayout
         {
             new Button { Text = "small", Command = new Command(() => page.SelectedDetent = page.Detents[2]) },
             new Button { Text = "medium", Command = new Command(() => page.SelectedDetent = page.Detents[1]) },
             new Button { Text = "large", Command = new Command(() => page.SelectedDetent = page.Detents[0]) },
-        });
-        page.ShowAsync(Window);
+        };
+        page.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(page.SelectedDetent))
+                Toast.Make($"Selected Detent is now {(page.SelectedDetent is null ? "unknown" : page.SelectedDetent.ToString())}").Show();
+        };
+        page.ShowAsync();
     }
 
     void OpenDefaultDetent()
     {
-        var page = new SimplePage();
-        page.Detents = [
-            new FullscreenDetent(),
-            new MediumDetent() { IsDefault = true },
-            new RatioDetent { Ratio = .2f },
-        ];
-        page.HasBackdrop = false;
-        page.ShowAsync(Window);
+        var page = new SimplePage
+        {
+            Detents =
+            [
+                new FullscreenDetent(),
+                new MediumDetent { IsDefault = true },
+                new RatioDetent { Ratio = .2f },
+            ],
+            HasBackdrop = false
+        };
+        page.ShowAsync();
     }
 
     void OpenNoAnimationSheet()
     {
-        var page = new SimplePage();
-        page.Detents = [
-            new FullscreenDetent(),
-            new ContentDetent(),
-        ];
-        page.HasBackdrop = true;
-        page.SetExtraContent(new Button { Text = "Dismiss without animation", Command = new Command(() => page.DismissAsync(false)) });
-        page.ShowAsync(Window, false);
+        var page = new SimplePage
+        {
+            Detents =
+            [
+                new FullscreenDetent(),
+                new ContentDetent(),
+            ],
+            HasBackdrop = true
+        };
+        page.ExtraContent = new Button { Text = "Dismiss without animation", Command = new Command(() => page.DismissAsync(false)) };
+        page.ShowAsync(false);
     }
 
     void OpenScrollView()
     {
         var sheet = new ScrollSheet();
-
-        sheet.ShowAsync(Window);
+        sheet.ShowAsync();
     }
 
     void OpenBindableLayoutSheet()
     {
         var sheet = new BindableLayoutSheet();
-        sheet.ShowAsync(Window);
+        sheet.ShowAsync();
     }
 
     void OpenModalPage()
     {
-        var page = new SimplePage();
-        page.Detents = [
-            new FullscreenDetent(),
-            new ContentDetent(),
-        ];
-        page.HasBackdrop = true;
-        var b = new Button
+        var page = new SimplePage
         {
-            Text = "Go to page"
+            Detents =
+            [
+                new FullscreenDetent(),
+                new ContentDetent(),
+            ],
+            HasBackdrop = true
         };
 
+        var b = new Button { Text = "Go to page" };
         var g = new TapGestureRecognizer
         {
             Command = new Command(() =>
@@ -401,28 +434,30 @@ public partial class MainPage : ContentPage
                 Shell.Current.GoToAsync("//ModalPage");
             }),
         };
-
         b.GestureRecognizers.Add(g);
-        page.SetExtraContent(b);
-        page.ShowAsync(Window);
+        page.ExtraContent =b;
+        
+        page.ShowAsync();
     }
 
     void OpenSizingTest()
     {
         var t = new SizingTest();
-
-        t.ShowAsync(Window);
+        t.ShowAsync();
     }
 
     void OpenKeyboard()
     {
-        var t = new EntrySheet();
-        t.Detents = [
-            new FullscreenDetent(),
-            new MediumDetent(),
-            new ContentDetent(),
-        ];
-        t.ShowAsync(Window);
+        var t = new EntrySheet
+        {
+            Detents =
+            [
+                new FullscreenDetent(),
+                new MediumDetent(),
+                new ContentDetent(),
+            ]
+        };
+        t.ShowAsync();
     }
 
     void OpenChat()
@@ -440,22 +475,20 @@ public partial class MainPage : ContentPage
                 new RatioDetent { Ratio = .2f },
             ],
             HasBackdrop = true,
-        };
-
-        page.SetExtraContent(
-            new CollectionView
+            ExtraContent = new CollectionView
             {
                 HeightRequest = 400,
-                ItemsSource = Enumerable.Range(0,1000).Select(i => $"item {i}").ToList(),
+                ItemsSource = Enumerable.Range(0, 1000).Select(i => $"item {i}").ToList(),
                 ItemTemplate = new DataTemplate(() =>
                 {
                     var label = new Label { Margin = new(20, 10, 20, 10) };
                     label.SetBinding(Label.TextProperty, new Binding("."));
                     return label;
                 })
-            });
+            }
+        };
 
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
 
     void OpenWithScrollView()
@@ -470,60 +503,74 @@ public partial class MainPage : ContentPage
             HasBackdrop = true,
         };
 
-        page.ShowAsync(Window);
+        page.ShowAsync();
     }
 
 #if ANDROID
     void OpenCustomizeBehavior()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
-        page.Showing += (s, e) =>
+        var page = new SimplePage
         {
-            page.Controller.Behavior.DisableShapeAnimations();
+            HasBackdrop = true
         };
-        page.ShowAsync(Window);
+        page.Showing += (s, e) => page.Controller.Behavior.DisableShapeAnimations();
+        page.ShowAsync();
     }
+    
+    void OpenModalSheetWithinPage()
+    {
+        var page = new SimplePage
+        {
+            Detents =
+            [
+                new FullscreenDetent(),
+                new ContentDetent(),
+            ],
+            HasBackdrop = true
+        };
+
+        // var b = new Button { Text = "Go to page" };
+        // var g = new TapGestureRecognizer
+        // {
+        //     Command = new Command(() =>
+        //     {
+        //         page.DismissAsync(false);
+        //         Shell.Current.GoToAsync("//ModalPage");
+        //     }),
+        // };
+        // b.GestureRecognizers.Add(g);
+        // page.ExtraContent = b;
+
+        page.ShowAsync(this);
+    }
+
+    void OpenNonModalSheetWithinPage()
+    {
+        var sheet = new ScrollSheet();
+        sheet.ShowAsync(this);
+    }
+    
+    
 #elif IOS
     void OpenCustomizeBehavior()
     {
-        var page = new SimplePage();
-        page.HasBackdrop = true;
-        page.Showing += (s, e) =>
-        {
-            page.Controller.SheetPresentationController.PreferredCornerRadius = 2;
-        };
-        page.ShowAsync(Window);
+        var page = new SimplePage { HasBackdrop = true };
+        page.Showing += (s, e) => page.Controller.SheetPresentationController.PreferredCornerRadius = 2;
+        page.ShowAsync();
     }
 #endif
 
     private void list_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var item = (DemoEntry)list.SelectedItem;
-        if (item == null)
+        if (list.SelectedItem is DemoEntry item)
         {
-            return;
+            list.SelectedItem = null;
+            item.Command.Execute(null);
         }
-        item.Command.Execute(null);
     }
 
     void list_Scrolled(object? sender, ItemsViewScrolledEventArgs e)
     {
         Header.TranslationY = Math.Max(-e.VerticalOffset, -72);
     }
-
-    void Button_Clicked(object sender, EventArgs e)
-    {
-        Shell.Current.GoToAsync("//ModalPage");
-    }
 }
-public static class RandomColors
-{
-    private static readonly Random random = new();
-
-    public static Color RandomColor()
-    {
-        return Color.FromRgb(random.Next(256), random.Next(256), random.Next(256));
-    }
-}
-

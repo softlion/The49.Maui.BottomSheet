@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Shell
+﻿<Shell
     x:Class="The49.Maui.BottomSheet.Sample.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:The49.Maui.BottomSheet.Sample"
-    Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="False">
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="True">
 
     <ShellContent
         Title="Home"

@@ -8,7 +8,7 @@ public enum DismissOrigin
 
 public partial class BottomSheet : ContentView
 {
-    public static readonly BindableProperty DetentsProperty = BindableProperty.Create(nameof(Detents), typeof(IList<Detent>), typeof(BottomSheet), new List<Detent>());
+    public static readonly BindableProperty DetentsProperty = BindableProperty.Create(nameof(Detents), typeof(IList<Detent>), typeof(BottomSheet), defaultValueCreator: _ => new List<Detent>());
     public static readonly BindableProperty HasBackdropProperty = BindableProperty.Create(nameof(HasBackdrop), typeof(bool), typeof(BottomSheet), false);
     public static readonly BindableProperty HasHandleProperty = BindableProperty.Create(nameof(HasHandle), typeof(bool), typeof(BottomSheet), false);
     public static readonly BindableProperty HandleColorProperty = BindableProperty.Create(nameof(HandleColor), typeof(Color), typeof(BottomSheet));
@@ -71,15 +71,31 @@ public partial class BottomSheet : ContentView
         BackgroundColor = Colors.White;
     }
 
+    /// <summary>
+    /// Shows the bottom sheet above everything using the default window
+    /// </summary>
     public Task ShowAsync(bool animated = true)
     {
         var window = Application.Current?.Windows[0];
         if (window is null)
-            return Task.CompletedTask;
+            throw new ("Window is null");
         return ShowAsync(window, animated);
     }
 
-    public Task ShowAsync(Window window, bool animated = true)
+    /// <summary>
+    /// Shows the bottom sheet above everything using the specified Window
+    /// </summary>
+    public Task ShowAsync(Window window, bool animated = true) 
+        => ShowAsync(window, true, animated);
+
+    /// <summary>
+    /// Shows the bottom sheet "within" the page.
+    /// The sheet will be obscured by flyout page and shows vertically above navigation bar/tab bar.
+    /// </summary>
+    public Task ShowAsync(Page page, bool animated = true) 
+        => ShowAsync(page, false, animated);
+
+    private Task ShowAsync(Element element, bool aboveEverything, bool animated = true)
     {
         var completionSource = new TaskCompletionSource();
         void OnShown(object? sender, EventArgs e)
@@ -90,9 +106,13 @@ public partial class BottomSheet : ContentView
         Shown += OnShown;
 
         SelectedDetent ??= GetDefaultDetent();
-        window.AddLogicalChild(this);
-        BottomSheetManager.Show(window.Handler.MauiContext, this, animated);
+        element.AddLogicalChild(this);
 
+        if (element.Handler is null)
+            throw new ("Page or Window must be visible");
+        
+        BottomSheetManager.Show(element.Handler.MauiContext, this, animated, aboveEverything);
+        
         return completionSource.Task;
     }
 
@@ -127,10 +147,10 @@ public partial class BottomSheet : ContentView
         if (enabledDetents.Count > 0)
             return enabledDetents;
 
-        return new List<Detent> { new ContentDetent() };
+        return [new ContentDetent()];
     }
 
-    internal Detent? GetDefaultDetent()
+    private Detent? GetDefaultDetent()
     {
         var detent = SelectedDetent;
         if (detent != null)

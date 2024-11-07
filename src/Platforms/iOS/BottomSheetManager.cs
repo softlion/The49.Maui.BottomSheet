@@ -13,7 +13,7 @@ internal partial class BottomSheetManager
 
     internal static NFloat KeyboardHeight => _keyboardHeight;
 
-    static void PlatformShow(IMauiContext mauiContext, BottomSheet sheet, bool animated)
+    static void PlatformShow(IMauiContext mauiContext, BottomSheet sheet, bool animated, bool aboveEverything)
     {
         var controller = new BottomSheetViewController(mauiContext, sheet, (UIWindow)sheet.Parent.ToPlatform(mauiContext));
         sheet.Controller = controller; 

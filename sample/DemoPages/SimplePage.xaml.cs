@@ -3,56 +3,32 @@ using System.Windows.Input;
 
 namespace The49.Maui.BottomSheet.Sample.DemoPages;
 
-public class ListAction
+public record ListAction(string Title, ICommand Command)
 {
-    public string Title { get; set; }
-    public ICommand Command { get; set; }
+    public ListAction(string title, Action commandAction) : this(title, new Command(commandAction)){}
+    public ListAction(string title) : this(title, new Command(() => {})){}
 }
 
 public partial class SimplePage : BottomSheet
 {
-    public ObservableCollection<ListAction> Actions => new()
-    {
-        new ListAction
-        {
-            Title = "Share",
-            Command = new Command(() => { }),
-        },
-        new ListAction
-        {
-            Title = "Copy",
-            Command = new Command(() => { }),
-        },
-        new ListAction
-        {
-            Title = "Open in browser",
-            Command = new Command(() => { }),
-        },
-         new ListAction
-        {
-            Title = "Resize",
-            Command = new Command(Resize),
-        },
-        new ListAction
-        {
-            Title = "Dismiss",
-            Command = new Command(() => DismissAsync()),
-        }
-    };
+    public VisualElement Divider => divider;
+
+    public ObservableCollection<ListAction> Actions =>
+    [
+        new("Share"),
+        new("Copy"),
+        new("Open in browser"),
+        new("Resize", () => divider.HeightRequest = divider.HeightRequest != 32 ? 32 : 1),
+        new("Dismiss", () => DismissAsync())
+    ];
+    
     public SimplePage()
     {
         InitializeComponent();
     }
 
-    void Resize()
+    public View ExtraContent
     {
-        divider.HeightRequest = 32;
-    }
-
-    public VisualElement Divider => divider;
-
-    public void SetExtraContent(View view)
-    {
-        extra.Content = view;
+        set => extra.Content = value;
     }
 }
