@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
 using Maui.BottomSheet.Sample.DemoPages;
+using Mopups.Services;
 
 namespace The49.Maui.BottomSheet.Sample;
 
@@ -170,6 +171,12 @@ public partial class MainPage : ContentPage
             Title = "Content is ScrollView",
             Description = "the sheet contains a ScrollView",
             Command = new Command(OpenWithScrollView),
+        },
+        new DemoEntry
+        {
+            Title = "Inside a Mopup",
+            Description = "Open a Mopup, then open a sheet inside the mopup",
+            Command = new Command(OpenInMopup),
         },
 #if ANDROID
         new DemoEntry
@@ -506,6 +513,12 @@ public partial class MainPage : ContentPage
         page.ShowAsync();
     }
 
+    void OpenInMopup()
+    {
+        var container = new PopupTestPage();
+        MopupService.Instance.PushAsync(container);
+    }
+
 #if ANDROID
     void OpenCustomizeBehavior()
     {
@@ -541,13 +554,13 @@ public partial class MainPage : ContentPage
         // b.GestureRecognizers.Add(g);
         // page.ExtraContent = b;
 
-        page.ShowAsync(this);
+        page.ShowAsync(aboveEverything: false);
     }
 
     void OpenNonModalSheetWithinPage()
     {
         var sheet = new ScrollSheet();
-        sheet.ShowAsync(this);
+        sheet.ShowAsync(aboveEverything: false);
     }
     
     

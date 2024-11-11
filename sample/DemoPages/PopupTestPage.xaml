@@ -1,0 +1,63 @@
+<pages:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:pages="clr-namespace:Mopups.Pages;assembly=Mopups"
+           xmlns:demoPages="clr-namespace:The49.Maui.BottomSheet.Sample.DemoPages"
+           x:Class="The49.Maui.BottomSheet.Sample.DemoPages.PopupTestPage"
+           CloseWhenBackgroundIsClicked="False"
+           BackgroundColor="Transparent">
+    
+    <demoPages:PopupTestPage.Resources>
+        <Style x:Key="PopupBorder" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="Padding" Value="20, 15" />
+            <Setter Property="MaximumWidthRequest" Value="350" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="Stroke" Value="#9AD2E2" />
+        </Style>
+        
+        <Style x:Key="SubmitButtonStyle" BaseResourceKey="ButtonBaseStyle" TargetType="Button" ApplyToDerivedTypes="True">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="DarkBlue"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="15, 12, 20, 12" />
+            <Setter Property="ContentLayout" Value="Right, 30"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+
+    </demoPages:PopupTestPage.Resources>
+
+    <!-- var container = new PopupContainerPage(pageTitle, popupView, onSave, onClose); -->
+    <!-- MopupService.Instance.PushAsync(container); -->
+
+    <Border Style="{StaticResource PopupBorder}" Padding="0">
+
+        <VerticalStackLayout>
+            <!-- Header -->
+            <Border BackgroundColor="DarkBlue">
+                <Label x:Name="Title" Margin="0,10,0,7"
+                       HorizontalOptions="Center" VerticalOptions="Start" TextColor="White" FontSize="18" />
+            </Border>
+
+            <!-- Content -->
+            <Grid Margin="10,20">
+                
+                <Label Text="This is a content" />
+                <Button Text="Tap to open a bottom sheet" Clicked="OpenBottomSheet" />
+                
+            </Grid>
+
+            <!-- Footer -->
+            <!-- <BoxView Style="{StaticResource SeparatorBlue}" /> -->
+            <HorizontalStackLayout  Spacing="15" Margin="20,0,0,0" Padding="15,15" 
+                                    HorizontalOptions="End" BackgroundColor="White">
+                <Button Text="Close"  Clicked="CloseButton_OnTapped" Style="{StaticResource SubmitButtonStyle}" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </Border>
+
+    
+</pages:PopupPage>

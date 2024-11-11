@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Mopups.Hosting;
 
 namespace The49.Maui.BottomSheet.Sample;
 
@@ -12,6 +13,7 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseBottomSheet()
+            .ConfigureMopups()
             //.UseInsets()
             .ConfigureFonts(fonts =>
             {
