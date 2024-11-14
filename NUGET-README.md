@@ -1,9 +1,22 @@
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
 
-# Fixed version that do not crash, waiting since a couple of month for the PR
+# Fixed version that do not crash + mixed net8/net9 nuget
 
 As I can't wait that long, I'm pushing that to nuget in pre release mode.  
 That same package was previously pushed to a private nuget server and used in published apps. So it is stable enough.
+
+Additionally, I fixed a few new issues:
+- (ios) the background color was not set, because of the way the Mapper dictionary was declared
+- (android) the background color was not set correctly on Android. It looks like it worked, but it did not in many conditions.
+- (android) some apps crash with a message like "the bottomsheetbehavior can not be found". I was not able to determine what dependency cause that issue. Anyway that is fixed by converting the android xml layout into C# android code.
+- removed the dependency on MainPage, use the specified Window instead
+- Merged https://github.com/the49ltd/The49.Maui.BottomSheet/pull/133
+- (android) Fix "no sliding away" blocked in hidden mode
+- (android) Fix bottom sheet sometime displayed in hidden mode
+- (android) Fix handle not appearing
+- (android) (Demo app) Fix can't open the same demo item twice in a row
+- Breaking: removed DetentsCollection for simplicity. Use a ResourceDictionary to choose between detents with OnPlatform (see sample app)
+- (android) Uses Material3 design. That is working even if your app uses Material2.
 
 # What is Maui.BottomSheet?
 
