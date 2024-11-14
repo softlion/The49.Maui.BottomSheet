@@ -6,7 +6,7 @@ public enum DismissOrigin
     Programmatic,
 }
 
-public partial class BottomSheet : ContentView
+public partial class BottomSheet : ContentPage
 {
     public static readonly BindableProperty DetentsProperty = BindableProperty.Create(nameof(Detents), typeof(IList<Detent>), typeof(BottomSheet), defaultValueCreator: _ => new List<Detent>());
     public static readonly BindableProperty HasBackdropProperty = BindableProperty.Create(nameof(HasBackdrop), typeof(bool), typeof(BottomSheet), false);
@@ -74,28 +74,19 @@ public partial class BottomSheet : ContentView
     /// <summary>
     /// Shows the bottom sheet above everything using the default window
     /// </summary>
-    public Task ShowAsync(bool animated = true)
+    public Task ShowAsync(bool animated = true, bool aboveEverything = true)
     {
-        var window = Application.Current?.Windows[0];
-        if (window is null)
-            throw new ("Window is null");
-        return ShowAsync(window, animated);
+        var parent =  IPlatformApplication.Current!.Application.Windows[0];
+        return ShowAsync(parent, animated, aboveEverything);
     }
 
     /// <summary>
     /// Shows the bottom sheet above everything using the specified Window
     /// </summary>
-    public Task ShowAsync(Window window, bool animated = true) 
-        => ShowAsync(window, true, animated);
-
-    /// <summary>
-    /// Shows the bottom sheet "within" the page.
-    /// The sheet will be obscured by flyout page and shows vertically above navigation bar/tab bar.
-    /// </summary>
-    public Task ShowAsync(Page page, bool animated = true) 
-        => ShowAsync(page, false, animated);
-
-    private Task ShowAsync(Element element, bool aboveEverything, bool animated = true)
+    /// <param name="parent"></param>
+    /// <param name="animated"></param>
+    /// <param name="aboveEverything">Shows the bottom sheet "within" the page. The sheet will be obscured by flyout page and shows vertically above navigation bar/tab bar.</param>
+    public Task ShowAsync(IWindow parent, bool animated = true, bool aboveEverything = true)
     {
         var completionSource = new TaskCompletionSource();
         void OnShown(object? sender, EventArgs e)
@@ -106,13 +97,17 @@ public partial class BottomSheet : ContentView
         Shown += OnShown;
 
         SelectedDetent ??= GetDefaultDetent();
-        element.AddLogicalChild(this);
 
-        if (element.Handler is null)
-            throw new ("Page or Window must be visible");
+#if ANDROID
+        BottomSheetManager.Create(parent.Handler.MauiContext, this, aboveEverything);
+#endif
         
-        BottomSheetManager.Show(element.Handler.MauiContext, this, animated, aboveEverything);
+        (parent.Content as Element)!.AddLogicalChild(this);
+
+        Handler ??= BottomSheetHandler.CreateBottomSheetHandler(parent.Handler.MauiContext);
         
+        BottomSheetManager.Show(this, animated, aboveEverything);
+
         return completionSource.Task;
     }
 

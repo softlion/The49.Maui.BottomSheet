@@ -24,8 +24,6 @@ internal class BottomSheetContainer : UIView
         var topPadding = _window.SafeAreaInsets.Top;
         var maximumDetentValue = heightConstraint - topPadding - SheetTopSpacing;
         return _sheet.GetEnabledDetents().Select(d => d.GetHeight(_sheet, maximumDetentValue)).Max();
-
-        return 0;
     }
 
     internal BottomSheetContainer(BottomSheet sheet, UIView view, UIWindow window)

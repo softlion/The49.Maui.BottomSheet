@@ -122,5 +122,10 @@ public class BottomSheetViewController : UIViewController
         }
         SheetPresentationController.PreferredCornerRadius = (NFloat)cornerRadius;
     }
+
+    public void UpdateHasHandle(bool hasHandle)
+    {
+        SheetPresentationController.PrefersGrabberVisible = hasHandle;
+    }
 }
 
