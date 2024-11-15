@@ -1,3 +1,10 @@
+# WARNING
+
+The Android version of BottomSheet is incompatible with net9 community popups includung mopups.  
+It's mostly because it does not use Android's BottomSheetDialog, and tries to insert itself as a child of DecorView. But Android dialogs are very persistant and it looks like Android manage them as above everything.  
+Anyway, in the current version of BottomSheet, it's not working as expected when displaying a sheet from inside a dialog on net9.
+
+
 # <img src="./The49.Maui.BottomSheet.icon.svg?raw=true" height="24" alt="The49.Maui.BottomSheet icon" /> The49.Maui.BottomSheet
 
 > **NOTE**: Coming from Gerald Versluis' video? Make sure to check the section on [what changed since the video was made](#changes-since-gerald-versluis-video)
