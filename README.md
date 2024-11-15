@@ -1,6 +1,6 @@
 # WARNING
 
-The Android version of BottomSheet is incompatible with net9 community popups includung mopups.  
+The Android version of BottomSheet is incompatible with net9 community popups including mopups.  
 It's mostly because it does not use Android's BottomSheetDialog, and tries to insert itself as a child of DecorView. But Android dialogs are very persistant and it looks like Android manage them as above everything.  
 Anyway, in the current version of BottomSheet, it's not working as expected when displaying a sheet from inside a dialog on net9.
 
