@@ -1,9 +1,16 @@
-# WARNING
+For ANDROID and iOS only (maui 8 and 9).
 
-The Android version of BottomSheet is incompatible with net9 community popups including mopups.  
-It's mostly because it does not use Android's BottomSheetDialog, and tries to insert itself as a child of DecorView. But Android dialogs are very persistant and it looks like Android manage them as above everything.  
-Anyway, in the current version of BottomSheet, it's not working as expected when displaying a sheet from inside a dialog on net9.
+# WARNING NET9
 
+The Android version of BottomSheet is incompatible with the net9 "community toolkit" popups and the Mopups control too. 
+TLDR: if you display a BottoSheet from inside a popup on NET9, it will be displayed behind that popup, thus will not be visible.
+
+Starting net9, maui (and the community toolkit) changed the way modal dialogs are displayed on Android. 
+Instead of creating a plain android View and add it as the last child of the DecorView of the Activity, they used an android Dialog view. 
+It looks like Android manages Dialogs differently to make them topmost: whatever you add as a child of a DecorView, a Dialog will always be over it.
+
+To fix that, this BottomSheet control must migrate to use a BottomSheetDialog. 
+TODO !
 
 # <img src="./The49.Maui.BottomSheet.icon.svg?raw=true" height="24" alt="The49.Maui.BottomSheet icon" /> The49.Maui.BottomSheet
 
